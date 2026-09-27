@@ -1,0 +1,11 @@
+---
+deployment:
+  tasks:
+    # Change YOUR_CPANEL_USER to your cPanel username
+    # Main domain → /home/USER/public_html/
+    # Subfolder  → /home/USER/public_html/teacherTreck/
+    - export DEPLOYPATH=/home/YOUR_CPANEL_USER/public_html/
+    - /bin/mkdir -p $DEPLOYPATH
+    - /bin/mkdir -p $DEPLOYPATH/storage/uploads
+    - /bin/mkdir -p $DEPLOYPATH/storage/logs
+    - /usr/bin/rsync -av --exclude=".git" --exclude=".cpanel.yml" --exclude=".gitignore" --exclude=".env" --exclude="storage/uploads/" --exclude="storage/logs/" --exclude="*.log" ./ $DEPLOYPATH
