@@ -8,9 +8,8 @@ declare(strict_types=1);
 return [
     'app_name'   => 'MEDICO',
     'app_tagline'=> 'Class & Teacher Management',
-    // Subdomain root (track.medico.com.bd) → ''
-    // Folder under main site → '/teacher-traking'
-    // Local XAMPP → '/teacherTreck'
+    // Subdomain root: classes.web.medico.com.bd → ''
+    // Local XAMPP folder → '/teacherTreck'
     'base_url'   => '',
     'api_prefix' => '/api',
     'timezone'   => 'Asia/Dhaka',
