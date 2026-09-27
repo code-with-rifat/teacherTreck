@@ -51,8 +51,8 @@ try {
         $ts->execute([$like, $like, $like, $like]);
         foreach ($ts->fetchAll() as $t) {
             $href = $role === 'branch_manager'
-                ? '/teacherTreck/manager/teacher.php?id=' . (int) $t['id']
-                : '/teacherTreck/admin/dashboard.php';
+                ? '/manager/teacher.php?id=' . (int) $t['id']
+                : '/admin/dashboard.php';
             $results[] = [
                 'group' => 'Teachers',
                 'title' => $t['full_name'],
@@ -79,8 +79,8 @@ try {
         $cs->execute($params);
         foreach ($cs->fetchAll() as $c) {
             $href = $role === 'branch_manager'
-                ? '/teacherTreck/manager/class.php?id=' . (int) $c['id']
-                : '/teacherTreck/admin/reviews.php';
+                ? '/manager/class.php?id=' . (int) $c['id']
+                : '/admin/reviews.php';
             $label = trim(($c['subject'] ?? '') . (!empty($c['lecture_no']) ? ' · L' . (int) $c['lecture_no'] : ''));
             $results[] = [
                 'group' => 'Classes',
@@ -121,7 +121,7 @@ try {
                     'title' => ($c['subject'] ?: 'Class') . (!empty($c['lecture_no']) ? ' · L' . (int) $c['lecture_no'] : '')
                         . ' · ' . format_time($c['time_slot']),
                     'subtitle' => date('j M Y', strtotime($c['class_date'])) . ' · ' . $c['branch_name'] . ' · ' . $state,
-                    'href' => '/teacherTreck/teacher/class.php?id=' . (int) $c['id'],
+                    'href' => '/teacher/class.php?id=' . (int) $c['id'],
                 ];
             }
         }

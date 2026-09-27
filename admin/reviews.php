@@ -60,9 +60,9 @@ require __DIR__ . '/../includes/app_header.php';
         <div class="dg-teach-top">
           <h1 class="dg-hello">Reviews</h1>
           <div class="dg-toolbar admin-filter-bar">
-            <a class="admin-filter<?= !$flaggedOnly && !$compareOnly ? ' is-on' : '' ?>" href="/teacherTreck/admin/reviews.php">All</a>
-            <a class="admin-filter<?= $compareOnly ? ' is-on' : '' ?>" href="/teacherTreck/admin/reviews.php?compare=1">Both entered</a>
-            <a class="admin-filter<?= $flaggedOnly ? ' is-on' : '' ?>" href="/teacherTreck/admin/reviews.php?flagged=1">Flagged</a>
+            <a class="admin-filter<?= !$flaggedOnly && !$compareOnly ? ' is-on' : '' ?>" href="/admin/reviews.php">All</a>
+            <a class="admin-filter<?= $compareOnly ? ' is-on' : '' ?>" href="/admin/reviews.php?compare=1">Both entered</a>
+            <a class="admin-filter<?= $flaggedOnly ? ' is-on' : '' ?>" href="/admin/reviews.php?flagged=1">Flagged</a>
           </div>
         </div>
         <p class="admin-page-sub"><?= h($filterLabel) ?> · <?= (int) $total ?> record<?= $total === 1 ? '' : 's' ?></p>
@@ -86,7 +86,7 @@ require __DIR__ . '/../includes/app_header.php';
                     || !empty($r['manager_review_saved_at']);
                 $flagged = !empty($r['has_issue_flag']);
             ?>
-              <a class="admin-review-card<?= $flagged ? ' is-flag' : '' ?>" href="/teacherTreck/admin/review.php?class_id=<?= (int) $r['class_id'] ?>">
+              <a class="admin-review-card<?= $flagged ? ' is-flag' : '' ?>" href="/admin/review.php?class_id=<?= (int) $r['class_id'] ?>">
                 <div class="admin-review-main">
                   <strong><?= h($r['teacher_name']) ?></strong>
                   <span class="admin-review-meta">

@@ -113,7 +113,7 @@
         }
         searchTimer = setTimeout(async () => {
           try {
-            const res = await fetch('/teacherTreck/api/search.php?q=' + encodeURIComponent(q));
+            const res = await fetch('/api/search.php?q=' + encodeURIComponent(q));
             const data = await res.json();
             renderSearch(data.results || []);
           } catch (e) {
@@ -169,7 +169,7 @@
       const loadNotifs = async () => {
         if (!notifList) return;
         try {
-          const res = await fetch('/teacherTreck/api/notifications.php?limit=12');
+          const res = await fetch('/api/notifications.php?limit=12');
           const data = await res.json();
           setBadge(data.unread || 0);
           if (!data.items || !data.items.length) {
@@ -202,7 +202,7 @@
           const fd = new FormData();
           fd.append('action', 'mark_read');
           fd.append('id', id);
-          await fetch('/teacherTreck/api/notifications.php', { method: 'POST', body: fd });
+          await fetch('/api/notifications.php', { method: 'POST', body: fd });
         } catch (err) {}
       });
 
@@ -212,7 +212,7 @@
         fd.append('action', 'mark_read');
         fd.append('id', '0');
         try {
-          const res = await fetch('/teacherTreck/api/notifications.php', { method: 'POST', body: fd });
+          const res = await fetch('/api/notifications.php', { method: 'POST', body: fd });
           const data = await res.json();
           setBadge(data.unread || 0);
           loadNotifs();
@@ -221,7 +221,7 @@
 
       setInterval(async () => {
         try {
-          const res = await fetch('/teacherTreck/api/notifications.php?limit=1');
+          const res = await fetch('/api/notifications.php?limit=1');
           const data = await res.json();
           setBadge(data.unread || 0);
         } catch (e) {}

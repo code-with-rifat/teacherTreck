@@ -14,7 +14,7 @@ $teacherStmt->execute([(int) $user['id']]);
 $teacher = $teacherStmt->fetch();
 if (!$teacher) {
     flash('error', 'Teacher profile missing.');
-    redirect('/teacherTreck/logout.php');
+    redirect('/logout.php');
 }
 $teacherId = (int) $teacher['id'];
 $teacherName = (string) $teacher['full_name'];
@@ -33,12 +33,12 @@ $classStmt->execute([$classId, $teacherId]);
 $class = $classStmt->fetch();
 if (!$class) {
     flash('error', 'Class not found.');
-    redirect('/teacherTreck/teacher/dashboard.php');
+    redirect('/teacher/dashboard.php');
 }
 
-$classUrl = '/teacherTreck/teacher/class.php?id=' . $classId;
-$dashUrl = '/teacherTreck/teacher/dashboard.php?date=' . urlencode((string) $class['class_date']);
-$reviewUrl = '/teacherTreck/teacher/review.php?class_id=' . $classId;
+$classUrl = '/teacher/class.php?id=' . $classId;
+$dashUrl = '/teacher/dashboard.php?date=' . urlencode((string) $class['class_date']);
+$reviewUrl = '/teacher/review.php?class_id=' . $classId;
 $editUrl = $reviewUrl . '&edit=1';
 
 $existing = $pdo->prepare('SELECT * FROM class_reviews WHERE class_id = ? LIMIT 1');
@@ -334,8 +334,8 @@ require __DIR__ . '/../includes/app_header.php';
                   <h4>Issue photos</h4>
                   <div class="dg-evidence-grid">
                     <?php foreach ($evidenceList as $photo): ?>
-                      <a href="/teacherTreck/<?= h($photo) ?>" target="_blank" rel="noopener">
-                        <img src="/teacherTreck/<?= h($photo) ?>" alt="Evidence" />
+                      <a href="/<?= h($photo) ?>" target="_blank" rel="noopener">
+                        <img src="/<?= h($photo) ?>" alt="Evidence" />
                       </a>
                     <?php endforeach; ?>
                   </div>
@@ -436,8 +436,8 @@ require __DIR__ . '/../includes/app_header.php';
                 <?php if ($isEditForm && $evidenceList): ?>
                   <div class="dg-evidence-grid" style="margin-bottom:.75rem" data-existing-photos="1">
                     <?php foreach ($evidenceList as $photo): ?>
-                      <a href="/teacherTreck/<?= h($photo) ?>" target="_blank" rel="noopener">
-                        <img src="/teacherTreck/<?= h($photo) ?>" alt="Evidence" />
+                      <a href="/<?= h($photo) ?>" target="_blank" rel="noopener">
+                        <img src="/<?= h($photo) ?>" alt="Evidence" />
                       </a>
                     <?php endforeach; ?>
                   </div>

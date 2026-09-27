@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ]);
                     $pdo->commit();
                     flash('success', 'Account created. You can sign in now.');
-                    redirect('/teacherTreck/login.php');
+                    redirect('/login.php');
                 }
             } catch (Throwable $e) {
                 if (isset($pdo) && $pdo instanceof PDO && $pdo->inTransaction()) {

@@ -25,7 +25,7 @@ $st->execute([$classId]);
 $focus = $st->fetch();
 if (!$focus) {
     flash('error', 'Class not found.');
-    redirect('/teacherTreck/admin/reviews.php');
+    redirect('/admin/reviews.php');
 }
 
 $teacherId = (int) $focus['teacher_id'];
@@ -77,7 +77,7 @@ require __DIR__ . '/../includes/app_header.php';
         <div class="dg-teach-top">
           <h1 class="dg-hello"><?= h($focus['teacher_name']) ?></h1>
           <div class="dg-toolbar">
-            <a class="btn btn-secondary btn-sm" href="/teacherTreck/admin/reviews.php">← Reviews</a>
+            <a class="btn btn-secondary btn-sm" href="/admin/reviews.php">← Reviews</a>
           </div>
         </div>
         <p class="admin-page-sub">
@@ -248,8 +248,8 @@ require __DIR__ . '/../includes/app_header.php';
                         <strong>Evidence photos · tap to open</strong>
                         <div class="admin-photo-grid">
                           <?php foreach ($photos as $pi => $p): ?>
-                            <a href="/teacherTreck/<?= h($p) ?>" target="_blank" rel="noopener" title="Photo <?= $pi + 1 ?>">
-                              <img src="/teacherTreck/<?= h($p) ?>" alt="Evidence <?= $pi + 1 ?>" loading="lazy" />
+                            <a href="/<?= h($p) ?>" target="_blank" rel="noopener" title="Photo <?= $pi + 1 ?>">
+                              <img src="/<?= h($p) ?>" alt="Evidence <?= $pi + 1 ?>" loading="lazy" />
                             </a>
                           <?php endforeach; ?>
                         </div>

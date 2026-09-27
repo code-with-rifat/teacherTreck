@@ -8,21 +8,21 @@ declare(strict_types=1);
 function admin_nav(string $active): array
 {
     $links = [
-        ['id' => 'overview', 'href' => '/teacherTreck/admin/dashboard.php', 'icon' => '▣', 'label' => 'Dashboard'],
-        ['id' => 'classes', 'href' => '/teacherTreck/admin/classes.php', 'icon' => '▦', 'label' => 'Classes'],
-        ['id' => 'teachers', 'href' => '/teacherTreck/admin/teachers.php', 'icon' => '◎', 'label' => 'Teachers'],
-        ['id' => 'reviews', 'href' => '/teacherTreck/admin/reviews.php', 'icon' => '◈', 'label' => 'Reviews'],
-        ['id' => 'branches', 'href' => '/teacherTreck/admin/branches.php', 'icon' => '⌂', 'label' => 'Branches'],
-        ['id' => 'notifications', 'href' => '/teacherTreck/notifications.php', 'icon' => '◔', 'label' => 'Activity'],
+        ['id' => 'overview', 'href' => '/admin/dashboard.php', 'icon' => '▣', 'label' => 'Dashboard'],
+        ['id' => 'classes', 'href' => '/admin/classes.php', 'icon' => '▦', 'label' => 'Classes'],
+        ['id' => 'teachers', 'href' => '/admin/teachers.php', 'icon' => '◎', 'label' => 'Teachers'],
+        ['id' => 'reviews', 'href' => '/admin/reviews.php', 'icon' => '◈', 'label' => 'Reviews'],
+        ['id' => 'branches', 'href' => '/admin/branches.php', 'icon' => '⌂', 'label' => 'Branches'],
+        ['id' => 'notifications', 'href' => '/notifications.php', 'icon' => '◔', 'label' => 'Activity'],
     ];
     return [
         'activeNav' => $active,
         'navRole' => 'Admin',
         'shellStyle' => 'designo',
-        'composeHref' => '/teacherTreck/admin/branches.php',
+        'composeHref' => '/admin/branches.php',
         'composeLabel' => 'Branches',
-        'profileHref' => '/teacherTreck/admin/dashboard.php',
-        'settingsHref' => '/teacherTreck/admin/dashboard.php',
+        'profileHref' => '/admin/dashboard.php',
+        'settingsHref' => '/admin/dashboard.php',
         'settingsLabel' => 'Account',
         'navLinks' => $links,
         /* Bottom bar: keep 5 clean tabs; Activity stays in bell + sidebar */

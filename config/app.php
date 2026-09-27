@@ -8,17 +8,18 @@ declare(strict_types=1);
 return [
     'app_name'   => 'MEDICO',
     'app_tagline'=> 'Class & Teacher Management',
-    'base_url'   => '/teacherTreck',
-    'api_prefix' => '/teacherTreck/api',
+    // Domain root (public_html). Local XAMPP folder → '/teacherTreck'
+    'base_url'   => '',
+    'api_prefix' => '/api',
     'timezone'   => 'Asia/Dhaka',
-    'debug'      => true,
+    'debug'      => false,
 
     'db' => [
-        'host'    => '127.0.0.1',
+        'host'    => 'localhost',
         'port'    => 3306,
-        'name'    => 'medico_cms',
-        'user'    => 'root',
-        'pass'    => '',
+        'name'    => 'medicoweb_teacherTraking',
+        'user'    => 'medicoweb_teacher_traking',
+        'pass'    => 'Rifatmm45@',
         'charset' => 'utf8mb4',
     ],
 

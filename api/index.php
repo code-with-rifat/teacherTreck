@@ -2,7 +2,7 @@
 /**
  * MEDICO CMS — API entrypoint
  *
- * Base: /teacherTreck/api
+ * Base: /api
  */
 
 declare(strict_types=1);

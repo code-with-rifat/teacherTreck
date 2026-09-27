@@ -63,4 +63,4 @@ notify_teacher_class_action($pdo, $classId, 'class_start', 'Dr. Ayesha Rahman');
 
 echo "OK class_id={$classId} date={$today} slot={$slot} status=in_progress (started now)\n";
 echo "Teacher: teacher1@medico.local / Teacher@123\n";
-echo "Open: /teacherTreck/teacher/dashboard.php\n";
+echo "Open: /teacher/dashboard.php\n";

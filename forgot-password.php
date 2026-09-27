@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ->execute([password_hash($password, PASSWORD_BCRYPT), $uid]);
                 unset($_SESSION['pw_reset']);
                 flash('success', 'Password updated. এখন login করুন।');
-                redirect('/teacherTreck/login.php');
+                redirect('/login.php');
             } catch (Throwable $e) {
                 $error = $e->getMessage();
             }
@@ -169,7 +169,7 @@ require __DIR__ . '/includes/auth_header.php';
             <button class="btn btn-primary" type="submit">Verify code</button>
           </form>
           <p class="auth-footer" style="margin-top:.75rem"><a href="forgot-password.php">Resend code</a></p>
-          <script src="/teacherTreck/assets/js/otp.js" defer></script>
+          <script src="/assets/js/otp.js" defer></script>
 
         <?php else: ?>
           <form method="post">

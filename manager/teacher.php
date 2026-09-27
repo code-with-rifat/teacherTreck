@@ -26,7 +26,7 @@ $teacher = $stmt->fetch();
 
 if (!$teacher) {
     flash('error', 'Teacher not found.');
-    redirect('/teacherTreck/manager/teachers.php');
+    redirect('/manager/teachers.php');
 }
 
 $history = $pdo->prepare(
@@ -49,8 +49,8 @@ extract($nav);
 $pageTitle = $teacher['full_name'];
 $pageSub = $showDetails ? 'Full profile' : 'Teacher';
 $displayName = $branch['name'];
-$topActions = '<a class="btn btn-secondary btn-sm" href="/teacherTreck/manager/teachers.php" style="width:auto">← Teachers</a>'
-    . ' <a class="btn btn-primary btn-sm" href="/teacherTreck/manager/classes.php?new=1&teacher_id=' . (int) $teacher['id'] . '" style="width:auto">Assign class</a>';
+$topActions = '<a class="btn btn-secondary btn-sm" href="/manager/teachers.php" style="width:auto">← Teachers</a>'
+    . ' <a class="btn btn-primary btn-sm" href="/manager/classes.php?new=1&teacher_id=' . (int) $teacher['id'] . '" style="width:auto">Assign class</a>';
 require __DIR__ . '/../includes/app_header.php';
 ?>
         <section class="panel profile-sheet">
@@ -166,7 +166,7 @@ require __DIR__ . '/../includes/app_header.php';
                   </td>
                   <td><?= badge($r['status']) ?></td>
                   <td class="col-actions">
-                    <a class="btn btn-secondary btn-sm" href="/teacherTreck/manager/class.php?id=<?= (int) $r['id'] ?>">Track</a>
+                    <a class="btn btn-secondary btn-sm" href="/manager/class.php?id=<?= (int) $r['id'] ?>">Track</a>
                   </td>
                 </tr>
               <?php endforeach; endif; ?>

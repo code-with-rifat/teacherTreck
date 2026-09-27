@@ -283,20 +283,20 @@ function notification_link(array $n, string $role): string
     $id = (int) ($n['related_id'] ?? 0);
     if ($type === 'class' && $id > 0) {
         if ($role === 'branch_manager') {
-            return '/teacherTreck/manager/class.php?id=' . $id;
+            return '/manager/class.php?id=' . $id;
         }
         if (in_array($role, ['admin', 'super_admin'], true)) {
-            return '/teacherTreck/admin/review.php?class_id=' . $id;
+            return '/admin/review.php?class_id=' . $id;
         }
-        return '/teacherTreck/teacher/class.php?id=' . $id;
+        return '/teacher/class.php?id=' . $id;
     }
     if ($type === 'branch' && $id > 0 && in_array($role, ['admin', 'super_admin'], true)) {
-        return '/teacherTreck/admin/branches.php?edit=' . $id;
+        return '/admin/branches.php?edit=' . $id;
     }
     if ($type === 'user' && $id > 0 && $role === 'super_admin') {
-        return '/teacherTreck/super/dashboard.php?tab=users&q=' . $id;
+        return '/super/dashboard.php?tab=users&q=' . $id;
     }
-    return '/teacherTreck/notifications.php';
+    return '/notifications.php';
 }
 
 function time_ago(?string $datetime): string

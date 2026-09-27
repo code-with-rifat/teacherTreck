@@ -15,7 +15,7 @@ $teacherStmt->execute([(int) $user['id']]);
 $teacher = $teacherStmt->fetch();
 if (!$teacher) {
     flash('error', 'Teacher profile missing.');
-    redirect('/teacherTreck/logout.php');
+    redirect('/logout.php');
 }
 $teacherId = (int) $teacher['id'];
 $teacherName = (string) $teacher['full_name'];
@@ -64,7 +64,7 @@ $visit = $branchId > 0 ? teacher_branch_day($pdo, $teacherId, $branchId, $day) :
 $onSite = teacher_visit_on_site($visit);
 $everIn = !empty($visit['check_in_at']);
 
-$dashUrl = '/teacherTreck/teacher/dashboard.php?date=' . urlencode($day);
+$dashUrl = '/teacher/dashboard.php?date=' . urlencode($day);
 
 // ---- Check-in (first stamp kept; re-entry updates last_check_in_at only) ----
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'branch_check_in') {
@@ -342,11 +342,11 @@ require __DIR__ . '/../includes/app_header.php';
           <section class="dg-card">
             <div class="dg-card-head"><h3>Quick resources</h3></div>
             <div class="dg-resource-list">
-              <a class="dg-resource-item" href="/teacherTreck/teacher/profile.php">
+              <a class="dg-resource-item" href="/teacher/profile.php">
                 <span class="dg-file-ico">ME</span>
                 <div><strong>My profile</strong><span>Photo &amp; details</span></div>
               </a>
-              <a class="dg-resource-item" href="/teacherTreck/notifications.php">
+              <a class="dg-resource-item" href="/notifications.php">
                 <span class="dg-file-ico">ACT</span>
                 <div><strong>Activity</strong><span>Your updates</span></div>
               </a>
@@ -384,7 +384,7 @@ require __DIR__ . '/../includes/app_header.php';
               <ul class="dg-todo">
                 <?php foreach (array_slice($todos, 0, 6) as $item): ?>
                   <li>
-                    <a href="<?= $item['c'] ? '/teacherTreck/teacher/class.php?id=' . (int) $item['c']['id'] : '#branchVisit' ?>">
+                    <a href="<?= $item['c'] ? '/teacher/class.php?id=' . (int) $item['c']['id'] : '#branchVisit' ?>">
                       <i class="dg-check"></i>
                       <div>
                         <strong><?= h($item['c']['subject'] ?? 'Branch') ?></strong>
@@ -442,7 +442,7 @@ require __DIR__ . '/../includes/app_header.php';
                     }
                 ?>
                   <a class="dg-slot dg-slot-link<?= $live ? ' is-live' : '' ?><?= $done ? ' is-done' : '' ?><?= $isNext && !$done ? ' is-next' : '' ?>"
-                     href="/teacherTreck/teacher/class.php?id=<?= $cid ?>" id="class-<?= $cid ?>">
+                     href="/teacher/class.php?id=<?= $cid ?>" id="class-<?= $cid ?>">
                     <header class="dg-slot-head">
                       <div class="dg-slot-time">
                         <em>#<?= $ord ?></em>
@@ -500,7 +500,7 @@ require __DIR__ . '/../includes/app_header.php';
                   }
                   $shown++;
               ?>
-                <a class="dg-up-item" href="/teacherTreck/teacher/class.php?id=<?= (int) $c['id'] ?>">
+                <a class="dg-up-item" href="/teacher/class.php?id=<?= (int) $c['id'] ?>">
                   <span><?= h($c['subject'] ?: $c['branch_name']) ?></span>
                   <time><?= h(format_time($c['time_slot'])) ?></time>
                 </a>

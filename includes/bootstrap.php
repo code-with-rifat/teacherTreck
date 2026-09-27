@@ -20,7 +20,7 @@ function h(?string $s): string
 function redirect(string $path): void
 {
     if (!str_starts_with($path, 'http')) {
-        $base = rtrim((require __DIR__ . '/../config/app.php')['base_url'] ?? '/teacherTreck', '/');
+        $base = rtrim((require __DIR__ . '/../config/app.php')['base_url'] ?? '', '/');
         if (!str_starts_with($path, '/')) {
             $path = $base . '/' . $path;
         }
@@ -117,7 +117,7 @@ function require_login(?array $roles = null): array
     $user = current_user();
     if (!$user) {
         flash('error', 'Please sign in first.');
-        redirect('/teacherTreck/login.php');
+        redirect('/login.php');
     }
     if ($roles !== null && !in_array($user['role'], $roles, true)) {
         flash('error', 'You do not have access to that page.');
@@ -129,11 +129,11 @@ function require_login(?array $roles = null): array
 function role_home(string $role): string
 {
     return match ($role) {
-        'teacher' => '/teacherTreck/teacher/dashboard.php',
-        'branch_manager' => '/teacherTreck/manager/dashboard.php',
-        'admin' => '/teacherTreck/admin/dashboard.php',
-        'super_admin' => '/teacherTreck/super/dashboard.php',
-        default => '/teacherTreck/login.php',
+        'teacher' => '/teacher/dashboard.php',
+        'branch_manager' => '/manager/dashboard.php',
+        'admin' => '/admin/dashboard.php',
+        'super_admin' => '/super/dashboard.php',
+        default => '/login.php',
     };
 }
 
@@ -410,7 +410,7 @@ function teacher_photo_src(?string $avatarPath): ?string
     if (!is_file($full)) {
         return null;
     }
-    return '/teacherTreck/' . $rel;
+    return '/' . $rel;
 }
 
 function save_teacher_avatar(array $file, int $teacherId): ?string
@@ -609,7 +609,7 @@ function ensure_teacher_flow_schema(): void
 /** Brand asset URLs (favicon_io package) */
 function brand_asset(string $file): string
 {
-    return '/teacherTreck/favicon_io/' . ltrim($file, '/');
+    return '/favicon_io/' . ltrim($file, '/');
 }
 
 function brand_favicon_tags(): string

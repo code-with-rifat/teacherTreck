@@ -35,7 +35,7 @@ function super_setting_set(PDO $pdo, string $key, string $val, string $desc = ''
 
 function super_redir(string $tab = 'overview'): never
 {
-    redirect('/teacherTreck/super/dashboard.php?tab=' . urlencode($tab));
+    redirect('/super/dashboard.php?tab=' . urlencode($tab));
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -257,11 +257,11 @@ $displayName = 'Super Admin';
 $shellStyle = 'designo';
 $hidePageHead = true;
 $navLinks = [
-    ['id' => 'system', 'href' => '/teacherTreck/super/dashboard.php', 'icon' => '⚙', 'label' => 'Control'],
-    ['id' => 'admin', 'href' => '/teacherTreck/admin/dashboard.php', 'icon' => '▣', 'label' => 'Admin'],
-    ['id' => 'branches', 'href' => '/teacherTreck/admin/branches.php', 'icon' => '⌂', 'label' => 'Branches'],
-    ['id' => 'reviews', 'href' => '/teacherTreck/admin/reviews.php', 'icon' => '◈', 'label' => 'Reviews'],
-    ['id' => 'notifications', 'href' => '/teacherTreck/notifications.php', 'icon' => '◔', 'label' => 'Activity'],
+    ['id' => 'system', 'href' => '/super/dashboard.php', 'icon' => '⚙', 'label' => 'Control'],
+    ['id' => 'admin', 'href' => '/admin/dashboard.php', 'icon' => '▣', 'label' => 'Admin'],
+    ['id' => 'branches', 'href' => '/admin/branches.php', 'icon' => '⌂', 'label' => 'Branches'],
+    ['id' => 'reviews', 'href' => '/admin/reviews.php', 'icon' => '◈', 'label' => 'Reviews'],
+    ['id' => 'notifications', 'href' => '/notifications.php', 'icon' => '◔', 'label' => 'Activity'],
 ];
 $mobileNavLinks = $navLinks;
 require __DIR__ . '/../includes/app_header.php';
@@ -335,15 +335,15 @@ $roleLabel = static fn (string $r): string => match ($r) {
             <strong>System settings</strong>
             <span>Email SMTP · mail test</span>
           </a>
-          <a class="sa-quick-card" href="/teacherTreck/admin/dashboard.php">
+          <a class="sa-quick-card" href="/admin/dashboard.php">
             <strong>Admin console</strong>
             <span>Classes · teachers · reviews</span>
           </a>
-          <a class="sa-quick-card" href="/teacherTreck/admin/branches.php?new=1">
+          <a class="sa-quick-card" href="/admin/branches.php?new=1">
             <strong>New branch + manager</strong>
             <span>Create login credentials</span>
           </a>
-          <a class="sa-quick-card" href="/teacherTreck/admin/reviews.php?flagged=1">
+          <a class="sa-quick-card" href="/admin/reviews.php?flagged=1">
             <strong>Flagged reviews</strong>
             <span>Network issues</span>
           </a>
@@ -476,7 +476,7 @@ $roleLabel = static fn (string $r): string => match ($r) {
           <section class="dg-card">
             <div class="dg-card-head">
               <h3>Assign manager</h3>
-              <a class="dg-link" href="/teacherTreck/admin/branches.php?new=1">+ New branch</a>
+              <a class="dg-link" href="/admin/branches.php?new=1">+ New branch</a>
             </div>
             <form method="post" class="br-form">
               <input type="hidden" name="action" value="assign_manager" />
@@ -503,7 +503,7 @@ $roleLabel = static fn (string $r): string => match ($r) {
             </form>
             <p class="muted" style="font-size:.8rem;margin:1rem 0 0">
               Full branch create + manager password →
-              <a href="/teacherTreck/admin/branches.php?new=1">Admin Branches</a>
+              <a href="/admin/branches.php?new=1">Admin Branches</a>
             </p>
           </section>
 
@@ -542,7 +542,7 @@ $roleLabel = static fn (string $r): string => match ($r) {
                           <?= $active ? 'Deactivate' : 'Activate' ?>
                         </button>
                       </form>
-                      <a class="btn btn-secondary btn-sm" href="/teacherTreck/admin/branches.php?edit=<?= (int) $b['id'] ?>" style="width:auto">Edit</a>
+                      <a class="btn btn-secondary btn-sm" href="/admin/branches.php?edit=<?= (int) $b['id'] ?>" style="width:auto">Edit</a>
                     </div>
                   </div>
                 <?php endforeach; ?>

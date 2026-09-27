@@ -35,7 +35,7 @@ $class = $classStmt->fetch();
 
 if (!$class) {
     flash('error', 'Class not found in your branch.');
-    redirect('/teacherTreck/manager/classes.php');
+    redirect('/manager/classes.php');
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         flash('success', 'Class review saved.');
     }
 
-    redirect('/teacherTreck/manager/class.php?id=' . $classId);
+    redirect('/manager/class.php?id=' . $classId);
 }
 
 $classStmt->execute([$classId, (int) $branch['id']]);
@@ -126,7 +126,7 @@ extract($nav);
 $pageTitle = 'Class tracking';
 $pageSub = $class['teacher_name'] . ' · ' . format_time($class['time_slot']) . ' · ' . class_label($class);
 $displayName = $branch['name'];
-$topActions = '<a class="btn btn-secondary btn-sm" href="/teacherTreck/manager/classes.php" style="width:auto">← Classes</a>';
+$topActions = '<a class="btn btn-secondary btn-sm" href="/manager/classes.php" style="width:auto">← Classes</a>';
 require __DIR__ . '/../includes/app_header.php';
 ?>
         <div class="mgr-track">
@@ -145,7 +145,7 @@ require __DIR__ . '/../includes/app_header.php';
                     $sClass = $sDone ? 'is-done' : ($sTimes ? 'is-mid' : 'is-open');
                 ?>
                   <a class="mgr-sib-item<?= $isHere ? ' is-here' : '' ?> <?= h($sClass) ?>"
-                     href="/teacherTreck/manager/class.php?id=<?= (int) $s['id'] ?>">
+                     href="/manager/class.php?id=<?= (int) $s['id'] ?>">
                     <em><?= h(format_time($s['time_slot'])) ?></em>
                     <strong><?= h($s['subject'] ?: 'Class') ?><?php if (!empty($s['lecture_no'])): ?> · L<?= (int) $s['lecture_no'] ?><?php endif; ?></strong>
                     <span><?= h($sLabel) ?><?php if ($s['student_count_manager'] !== null): ?> · <?= (int) $s['student_count_manager'] ?> stu<?php endif; ?></span>
@@ -184,7 +184,7 @@ require __DIR__ . '/../includes/app_header.php';
               <div class="panel-body">
                 <p class="mgr-track-name"><?= h($class['teacher_name']) ?></p>
                 <p class="mgr-track-meta"><?= h($class['teacher_phone']) ?></p>
-                <a class="btn btn-secondary btn-sm" href="/teacherTreck/manager/teacher.php?id=<?= (int) $class['teacher_id'] ?>" style="width:auto;margin-top:.75rem">Open profile</a>
+                <a class="btn btn-secondary btn-sm" href="/manager/teacher.php?id=<?= (int) $class['teacher_id'] ?>" style="width:auto;margin-top:.75rem">Open profile</a>
               </div>
             </section>
 
@@ -250,7 +250,7 @@ require __DIR__ . '/../includes/app_header.php';
                   <input type="file" name="signature_sheet" accept="image/*,application/pdf" />
                   <?php if (!empty($class['signature_sheet_path'])): ?>
                     <p class="mgr-track-meta" style="margin-top:.4rem">
-                      Current file: <a href="/teacherTreck/<?= h($class['signature_sheet_path']) ?>" target="_blank" rel="noopener">View</a>
+                      Current file: <a href="/<?= h($class['signature_sheet_path']) ?>" target="_blank" rel="noopener">View</a>
                     </p>
                   <?php endif; ?>
                 </div>

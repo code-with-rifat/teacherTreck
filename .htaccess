@@ -1,3 +1,5 @@
+DirectoryIndex index.php index.html
+
 RewriteEngine On
 
 # Serve API under /api
@@ -8,5 +10,11 @@ RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# SPA-style front routes → index
-RewriteRule ^(login|register|forgot-password|teacher|manager|admin|super)(/.*)?$ index.html [L]
+# Pretty routes → PHP pages
+RewriteRule ^login/?$ login.php [L,QSA]
+RewriteRule ^register/?$ register.php [L,QSA]
+RewriteRule ^forgot-password/?$ forgot-password.php [L,QSA]
+RewriteRule ^teacher/?$ teacher/dashboard.php [L,QSA]
+RewriteRule ^manager/?$ manager/dashboard.php [L,QSA]
+RewriteRule ^admin/?$ admin/dashboard.php [L,QSA]
+RewriteRule ^super/?$ super/dashboard.php [L,QSA]

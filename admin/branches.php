@@ -25,19 +25,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($name === '') {
             flash('error', 'Branch name required.');
-            redirect('/teacherTreck/admin/branches.php?new=1');
+            redirect('/admin/branches.php?new=1');
         }
         if (!filter_var($mgrEmail, FILTER_VALIDATE_EMAIL)) {
             flash('error', 'Valid manager login email required.');
-            redirect('/teacherTreck/admin/branches.php?new=1');
+            redirect('/admin/branches.php?new=1');
         }
         if (strlen($mgrPass) < 8) {
             flash('error', 'Manager password must be at least 8 characters.');
-            redirect('/teacherTreck/admin/branches.php?new=1');
+            redirect('/admin/branches.php?new=1');
         }
         if ($branchEmail !== '' && !filter_var($branchEmail, FILTER_VALIDATE_EMAIL)) {
             flash('error', 'Invalid branch contact email.');
-            redirect('/teacherTreck/admin/branches.php?new=1');
+            redirect('/admin/branches.php?new=1');
         }
 
         /* Auto code for DB uniqueness — not shown to admin */
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $emailEx->execute([$mgrEmail]);
         if ($emailEx->fetch()) {
             flash('error', 'Manager email already used. Pick another login email.');
-            redirect('/teacherTreck/admin/branches.php?new=1');
+            redirect('/admin/branches.php?new=1');
         }
 
         try {
@@ -100,13 +100,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'success',
                 'Branch created. Manager login — User ID #' . $managerId . ' · ' . $mgrEmail . ' (password you set).'
             );
-            redirect('/teacherTreck/admin/branches.php?edit=' . $newId);
+            redirect('/admin/branches.php?edit=' . $newId);
         } catch (Throwable $e) {
             if ($pdo->inTransaction()) {
                 $pdo->rollBack();
             }
             flash('error', 'Could not create branch. Try again.');
-            redirect('/teacherTreck/admin/branches.php?new=1');
+            redirect('/admin/branches.php?new=1');
         }
     }
 
@@ -126,24 +126,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($id < 1 || $name === '') {
             flash('error', 'Branch name required.');
-            redirect('/teacherTreck/admin/branches.php');
+            redirect('/admin/branches.php');
         }
         if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             flash('error', 'Invalid branch email.');
-            redirect('/teacherTreck/admin/branches.php?edit=' . $id);
+            redirect('/admin/branches.php?edit=' . $id);
         }
 
         /* Create brand-new manager login for this branch */
         if ($newMgrEmail !== '' || $newMgrPass !== '') {
             if (!filter_var($newMgrEmail, FILTER_VALIDATE_EMAIL) || strlen($newMgrPass) < 8) {
                 flash('error', 'New manager needs valid email + password (8+).');
-                redirect('/teacherTreck/admin/branches.php?edit=' . $id);
+                redirect('/admin/branches.php?edit=' . $id);
             }
             $emailEx = $pdo->prepare('SELECT id FROM users WHERE email = ?');
             $emailEx->execute([$newMgrEmail]);
             if ($emailEx->fetch()) {
                 flash('error', 'That login email already exists.');
-                redirect('/teacherTreck/admin/branches.php?edit=' . $id);
+                redirect('/admin/branches.php?edit=' . $id);
             }
             $pdo->prepare(
                 "INSERT INTO users (email, password_hash, role, status, email_verified_at)
@@ -155,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $m->execute([$managerId]);
             if (!$m->fetch()) {
                 flash('error', 'Invalid branch manager.');
-                redirect('/teacherTreck/admin/branches.php?edit=' . $id);
+                redirect('/admin/branches.php?edit=' . $id);
             }
         }
 
@@ -167,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($resetPass !== '' && $managerId > 0) {
             if (strlen($resetPass) < 8) {
                 flash('error', 'Reset password must be at least 8 characters.');
-                redirect('/teacherTreck/admin/branches.php?edit=' . $id);
+                redirect('/admin/branches.php?edit=' . $id);
             }
             $pdo->prepare('UPDATE users SET password_hash = ? WHERE id = ? AND role = \'branch_manager\'')
                 ->execute([password_hash($resetPass, PASSWORD_BCRYPT), $managerId]);
@@ -197,10 +197,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             flash('success', 'Branch saved.');
         }
-        redirect('/teacherTreck/admin/branches.php?edit=' . $id);
+        redirect('/admin/branches.php?edit=' . $id);
     }
 
-    redirect('/teacherTreck/admin/branches.php');
+    redirect('/admin/branches.php');
 }
 
 $branchTotal = (int) $pdo->query('SELECT COUNT(*) FROM branches')->fetchColumn();
@@ -333,7 +333,7 @@ require __DIR__ . '/../includes/app_header.php';
             <?php if ($showNew): ?>
               <div class="dg-card-head">
                 <h3>New branch + manager</h3>
-                <a class="dg-link" href="/teacherTreck/admin/branches.php">Cancel</a>
+                <a class="dg-link" href="/admin/branches.php">Cancel</a>
               </div>
               <form method="post" class="br-form">
                 <input type="hidden" name="action" value="create_branch" />

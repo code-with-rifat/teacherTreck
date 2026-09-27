@@ -1,7 +1,7 @@
 <?php
 /**
  * One-click database setup for XAMPP (open in browser once).
- * http://localhost/teacherTreck/setup.php
+ * http://localhost/setup.php
  */
 
 declare(strict_types=1);

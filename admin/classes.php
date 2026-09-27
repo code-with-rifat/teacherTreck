@@ -295,7 +295,7 @@ $viewFilters = [
                       $classBits[] = 'L' . (int) $c['lecture_no'];
                   }
               ?>
-                <a class="ac-row <?= h($stClass) ?>" href="/teacherTreck/admin/review.php?class_id=<?= (int) $c['id'] ?>">
+                <a class="ac-row <?= h($stClass) ?>" href="/admin/review.php?class_id=<?= (int) $c['id'] ?>">
                   <span class="ac-time"><?= h(format_time($c['time_slot'])) ?></span>
                   <span class="ac-teacher"><?= h($c['teacher_name']) ?></span>
                   <span class="ac-class"><?= h(implode(' · ', $classBits)) ?></span>

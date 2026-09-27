@@ -3,7 +3,7 @@
  */
 (function (global) {
   // Use index.php so it works even if Apache rewrite is off
-  const BASE = '/teacherTreck/api/index.php';
+  const BASE = '/api/index.php';
   const TOKEN_KEY = 'medico_token';
   const USER_KEY = 'medico_user';
   const PROFILE_KEY = 'medico_profile';
@@ -83,7 +83,7 @@
       if (res.status === 401) {
         clearSession();
         if (!location.pathname.includes('login') && !location.pathname.includes('register')) {
-          location.href = '/teacherTreck/login.html';
+          location.href = '/login.html';
         }
       }
 
@@ -108,11 +108,11 @@
   function requireAuth(roles) {
     const user = currentUser();
     if (!user || !getToken()) {
-      location.href = '/teacherTreck/login.html';
+      location.href = '/login.html';
       return null;
     }
     if (roles && !roles.includes(user.role)) {
-      location.href = '/teacherTreck/index.html';
+      location.href = '/index.html';
       return null;
     }
     return user;
@@ -121,15 +121,15 @@
   function roleHome(role) {
     switch (role) {
       case 'teacher':
-        return '/teacherTreck/teacher/index.html';
+        return '/teacher/index.html';
       case 'branch_manager':
-        return '/teacherTreck/manager/index.html';
+        return '/manager/index.html';
       case 'admin':
-        return '/teacherTreck/admin/index.html';
+        return '/admin/index.html';
       case 'super_admin':
-        return '/teacherTreck/super/index.html';
+        return '/super/index.html';
       default:
-        return '/teacherTreck/login.html';
+        return '/login.html';
     }
   }
 
@@ -243,7 +243,7 @@
     document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
       e.preventDefault();
       clearSession();
-      location.href = '/teacherTreck/login.html';
+      location.href = '/login.html';
     });
   }
 

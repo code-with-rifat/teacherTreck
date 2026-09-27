@@ -14,7 +14,7 @@ $teacherStmt->execute([(int) $user['id']]);
 $teacher = $teacherStmt->fetch();
 if (!$teacher) {
     flash('error', 'Teacher profile missing.');
-    redirect('/teacherTreck/logout.php');
+    redirect('/logout.php');
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'change_password') {
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'chang
             ->execute([password_hash($new, PASSWORD_BCRYPT), (int) $user['id']]);
         flash('success', 'Password updated.');
     }
-    redirect('/teacherTreck/teacher/profile.php');
+    redirect('/teacher/profile.php');
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'upload_photo') {
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'uploa
     } catch (Throwable $e) {
         flash('error', $e->getMessage());
     }
-    redirect('/teacherTreck/teacher/profile.php');
+    redirect('/teacher/profile.php');
 }
 
 $stats = $pdo->prepare(
@@ -186,7 +186,7 @@ require __DIR__ . '/../includes/app_header.php';
             </form>
             <p class="muted" style="font-size:.8rem;margin:1rem 0 0">
               Forgot current password?
-              <a href="/teacherTreck/forgot-password.php">Email recovery</a>
+              <a href="/forgot-password.php">Email recovery</a>
             </p>
           </section>
         </div>
@@ -210,7 +210,7 @@ require __DIR__ . '/../includes/app_header.php';
                       ? 'Live'
                       : ucfirst(str_replace('_', ' ', (string) ($r['status'] ?? 'scheduled')));
               ?>
-                <a class="tp-hist-item" href="/teacherTreck/teacher/class.php?id=<?= $cid ?>">
+                <a class="tp-hist-item" href="/teacher/class.php?id=<?= $cid ?>">
                   <div class="tp-hist-when">
                     <strong><?= h(format_time($r['time_slot'])) ?></strong>
                     <span><?= h(date('j M Y', strtotime((string) $r['class_date']))) ?></span>

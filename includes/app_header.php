@@ -29,9 +29,9 @@ $firstName = trim(explode(' ', (string) ($displayName ?? 'there'))[0] ?: 'there'
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Limelight&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/teacherTreck/assets/css/app.css" />
+  <link rel="stylesheet" href="/assets/css/app.css" />
   <?php if ($isDesigno): ?>
-  <link rel="stylesheet" href="/teacherTreck/assets/css/designo.css" />
+  <link rel="stylesheet" href="/assets/css/designo.css" />
   <?php endif; ?>
 </head>
 <body class="<?= $isDesigno ? 'is-designo' : '' ?>">
@@ -60,8 +60,8 @@ $firstName = trim(explode(' ', (string) ($displayName ?? 'there'))[0] ?: 'there'
         <?php endif; ?>
       </nav>
       <div class="designo-side-foot">
-        <a href="/teacherTreck/notifications.php">Notifications<?= $notifUnread ? ' · ' . (int) $notifUnread : '' ?></a>
-        <a href="/teacherTreck/logout.php" class="is-danger">Sign out</a>
+        <a href="/notifications.php">Notifications<?= $notifUnread ? ' · ' . (int) $notifUnread : '' ?></a>
+        <a href="/logout.php" class="is-danger">Sign out</a>
       </div>
     </aside>
   <?php endif; ?>
@@ -143,7 +143,7 @@ $firstName = trim(explode(' ', (string) ($displayName ?? 'there'))[0] ?: 'there'
             <div id="notifList" class="notif-list">
               <div class="search-empty">Loading…</div>
             </div>
-            <a class="notif-see-all" href="/teacherTreck/notifications.php">See all history</a>
+            <a class="notif-see-all" href="/notifications.php">See all history</a>
           </div>
         </details>
 
@@ -172,8 +172,8 @@ $firstName = trim(explode(' ', (string) ($displayName ?? 'there'))[0] ?: 'there'
               <?php if ($settingsHref): ?>
                 <a href="<?= h($settingsHref) ?>"><?= h($settingsLabel) ?></a>
               <?php endif; ?>
-              <a href="/teacherTreck/notifications.php">Notification history</a>
-              <a href="/teacherTreck/logout.php" class="is-danger">Sign out</a>
+              <a href="/notifications.php">Notification history</a>
+              <a href="/logout.php" class="is-danger">Sign out</a>
             </div>
           </div>
         </details>
