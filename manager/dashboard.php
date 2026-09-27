@@ -149,14 +149,14 @@ require __DIR__ . '/../includes/app_header.php';
             <input type="date" name="date" value="<?= h($day) ?>" onchange="this.form.submit()"
                    style="border:1px solid var(--dg-line,#e5e7eb);border-radius:999px;padding:.4rem .75rem;background:#fff" />
           </form>
-          <a class="btn btn-primary btn-sm" href="/teacher-traking/manager/classes.php?new=1&date=<?= h($day) ?>" style="width:auto;margin-left:auto">+ Assign class</a>
+          <a class="btn btn-primary btn-sm" href="/manager/classes.php?new=1&date=<?= h($day) ?>" style="width:auto;margin-left:auto">+ Assign class</a>
         </div>
 
         <div class="dg-grid">
           <section class="dg-card">
             <div class="dg-card-head">
               <h3>Today's schedule progress</h3>
-              <a class="dg-link" href="/teacher-traking/manager/classes.php">See all</a>
+              <a class="dg-link" href="/manager/classes.php">See all</a>
             </div>
             <div class="dg-progress-label"><?= h($branch['name']) ?> · <?= h($dayFull) ?></div>
             <div class="dg-progress-track">
@@ -178,14 +178,14 @@ require __DIR__ . '/../includes/app_header.php';
               <h3>Quick resources</h3>
             </div>
             <div class="dg-resource-list">
-              <a class="dg-resource-item" href="/teacher-traking/manager/classes.php?new=1&date=<?= h($day) ?>">
+              <a class="dg-resource-item" href="/manager/classes.php?new=1&date=<?= h($day) ?>">
                 <span class="dg-file-ico">CL</span>
                 <div>
                   <strong>Assign class</strong>
                   <span>Create a slot for a teacher</span>
                 </div>
               </a>
-              <a class="dg-resource-item" href="/teacher-traking/manager/teachers.php">
+              <a class="dg-resource-item" href="/manager/teachers.php">
                 <span class="dg-file-ico">TR</span>
                 <div>
                   <strong>Teachers roster</strong>
@@ -227,7 +227,7 @@ require __DIR__ . '/../includes/app_header.php';
           <section class="dg-card">
             <div class="dg-card-head">
               <h3>To-do · your entry</h3>
-              <a class="dg-link" href="/teacher-traking/manager/classes.php">Open</a>
+              <a class="dg-link" href="/manager/classes.php">Open</a>
             </div>
             <?php if (!$needAction): ?>
               <div class="empty-state" style="padding:1rem 0"><strong>All caught up</strong>No pending times/reviews.</div>
@@ -238,7 +238,7 @@ require __DIR__ . '/../includes/app_header.php';
                     $task = $hasTimes ? 'Add review' : (!empty($c['check_in_at']) ? 'Enter class times' : 'Awaiting check-in');
                 ?>
                   <li>
-                    <a href="/teacher-traking/manager/class.php?id=<?= (int) $c['id'] ?>">
+                    <a href="/manager/class.php?id=<?= (int) $c['id'] ?>">
                       <i class="dg-check" aria-hidden="true"></i>
                       <div>
                         <strong><?= h($c['teacher_name']) ?></strong>
@@ -269,7 +269,7 @@ require __DIR__ . '/../includes/app_header.php';
           <section class="dg-card dg-span-2">
             <div class="dg-card-head">
               <h3>Classes · <?= h($dayFull) ?></h3>
-              <a class="dg-link" href="/teacher-traking/manager/classes.php">See more</a>
+              <a class="dg-link" href="/manager/classes.php">See more</a>
             </div>
             <?php if (!$upcoming): ?>
               <div class="empty-state"><strong>No classes this day</strong>Assign a class to get started.</div>
@@ -281,7 +281,7 @@ require __DIR__ . '/../includes/app_header.php';
                     $hasReview = $c['count_best'] !== null || $c['count_good'] !== null || !empty($c['manager_review_saved_at']);
                     $live = $onSite && !($hasTimes && $hasReview);
                 ?>
-                  <a class="dg-class-card<?= $live ? ' is-live' : '' ?>" href="/teacher-traking/manager/class.php?id=<?= (int) $c['id'] ?>">
+                  <a class="dg-class-card<?= $live ? ' is-live' : '' ?>" href="/manager/class.php?id=<?= (int) $c['id'] ?>">
                     <div class="dg-class-time"><?= h(format_time($c['time_slot'])) ?></div>
                     <div>
                       <strong><?= h($c['teacher_name']) ?></strong>
@@ -320,7 +320,7 @@ require __DIR__ . '/../includes/app_header.php';
                   }
                   $shown++;
               ?>
-                <a class="dg-up-item" href="/teacher-traking/manager/class.php?id=<?= (int) $c['id'] ?>">
+                <a class="dg-up-item" href="/manager/class.php?id=<?= (int) $c['id'] ?>">
                   <span><?= h($c['subject'] ?: $c['teacher_name']) ?></span>
                   <time><?= h(format_time($c['time_slot'])) ?></time>
                 </a>

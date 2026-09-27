@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Branch Manager — MEDICO</title>
-  <link rel="stylesheet" href="../teacher-traking/assets/css/app.css" />
+  <link rel="stylesheet" href="../assets/css/app.css" />
 </head>
 <body>
   <div id="overlay" class="overlay"></div>
@@ -164,7 +164,7 @@
     </div>
   </div>
 
-  <script src="../teacher-traking/assets/js/app.js"></script>
+  <script src="../assets/js/app.js"></script>
   <script>
     const user = Medico.requireAuth(['branch_manager']);
     if (!user) throw new Error('auth');
@@ -174,7 +174,7 @@
     let verifyClassId = null;
 
     async function load() {
-      const { ok, data } = await Medico.api('/teacher-traking/manager/dashboard');
+      const { ok, data } = await Medico.api('/manager/dashboard');
       if (!ok) {
         alert(data.message || 'Failed to load');
         return;
@@ -224,12 +224,12 @@
     }
 
     async function markReminder(id) {
-      await Medico.api(`/teacher-traking/manager/classes/${id}/reminder`, { method: 'POST' });
+      await Medico.api(`/manager/classes/${id}/reminder`, { method: 'POST' });
       load();
     }
 
     async function loadTeachers() {
-      const { ok, data } = await Medico.api('/teacher-traking/manager/teachers');
+      const { ok, data } = await Medico.api('/manager/teachers');
       if (!ok) return;
       const sel = document.getElementById('teacher_id');
       sel.innerHTML = (data.data || []).map((t) => `<option value="${t.id}">${t.full_name}</option>`).join('');
@@ -245,7 +245,7 @@
     document.getElementById('closeVerify').addEventListener('click', () => document.getElementById('verifyModal').classList.remove('show'));
 
     document.getElementById('saveClass').addEventListener('click', async () => {
-      const { ok, data } = await Medico.api('/teacher-traking/manager/classes', {
+      const { ok, data } = await Medico.api('/manager/classes', {
         method: 'POST',
         body: {
           teacher_id: document.getElementById('teacher_id').value,
@@ -266,7 +266,7 @@
       fd.append('student_count_manager', document.getElementById('student_count_manager').value);
       const file = document.getElementById('signature_sheet').files[0];
       if (file) fd.append('signature_sheet', file);
-      const { ok, data } = await Medico.api(`/teacher-traking/manager/classes/${verifyClassId}/verify`, {
+      const { ok, data } = await Medico.api(`/manager/classes/${verifyClassId}/verify`, {
         method: 'POST',
         body: fd,
       });
@@ -289,7 +289,7 @@
     });
 
     document.getElementById('saveLocation').addEventListener('click', async () => {
-      const { ok, data } = await Medico.api('/teacher-traking/manager/branch/location', {
+      const { ok, data } = await Medico.api('/manager/branch/location', {
         method: 'POST',
         body: {
           latitude: document.getElementById('lat').value,

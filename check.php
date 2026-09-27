@@ -8,7 +8,7 @@ echo "PHP OK " . PHP_VERSION . "\n";
 echo "File: " . __FILE__ . "\n";
 echo "Dir:  " . __DIR__ . "\n";
 echo "index.php: " . (is_file(__DIR__ . '/index.php') ? 'YES' : 'NO') . "\n";
-echo "login.php: " . (is_file(__DIR__ . '/teacher-traking/login.php') ? 'YES' : 'NO') . "\n";
+echo "login.php: " . (is_file(__DIR__ . '/login.php') ? 'YES' : 'NO') . "\n";
 echo "config:    " . (is_file(__DIR__ . '/config/app.php') ? 'YES' : 'NO') . "\n";
 
 try {

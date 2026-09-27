@@ -8,16 +8,16 @@ declare(strict_types=1);
 function teacher_nav(string $active, string $displayName = 'Teacher'): array
 {
     $links = [
-        ['id' => 'dashboard', 'href' => '/teacher-traking/teacher/dashboard.php', 'icon' => '▣', 'label' => 'Home'],
-        ['id' => 'profile', 'href' => '/teacher-traking/teacher/profile.php', 'icon' => '◎', 'label' => 'Profile'],
-        ['id' => 'notifications', 'href' => '/teacher-traking/notifications.php', 'icon' => '◔', 'label' => 'Activity'],
+        ['id' => 'dashboard', 'href' => '/teacher/dashboard.php', 'icon' => '▣', 'label' => 'Home'],
+        ['id' => 'profile', 'href' => '/teacher/profile.php', 'icon' => '◎', 'label' => 'Profile'],
+        ['id' => 'notifications', 'href' => '/notifications.php', 'icon' => '◔', 'label' => 'Activity'],
     ];
     return [
         'activeNav' => $active,
         'navRole' => 'Teacher',
         'shellStyle' => 'designo',
-        'profileHref' => '/teacher-traking/teacher/profile.php',
-        'settingsHref' => '/teacher-traking/teacher/profile.php',
+        'profileHref' => '/teacher/profile.php',
+        'settingsHref' => '/teacher/profile.php',
         'settingsLabel' => 'Profile settings',
         'displayName' => $displayName,
         'navLinks' => $links,

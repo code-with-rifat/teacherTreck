@@ -26,7 +26,7 @@ final class Request
 
     private function resolvePath(): string
     {
-        // Prefer PATH_INFO: /teacher-traking/api/index.php/auth/login
+        // Prefer PATH_INFO: /api/index.php/auth/login
         $pathInfo = $_SERVER['PATH_INFO'] ?? '';
         if (is_string($pathInfo) && $pathInfo !== '') {
             return rtrim($pathInfo, '/') ?: '/';

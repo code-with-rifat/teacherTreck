@@ -1,7 +1,8 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/medicoweb/public_html/teacher-traking/
+    # Subdomain document root (cPanel → Domains → track.medico.com.bd)
+    - export DEPLOYPATH=/home/medicoweb/track.medico.com.bd/
     - /bin/mkdir -p $DEPLOYPATH
     - /bin/mkdir -p $DEPLOYPATH/storage/uploads
     - /bin/mkdir -p $DEPLOYPATH/storage/logs

@@ -22,7 +22,7 @@ function h(?string $s): string
     return htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8');
 }
 
-/** App URL with base_url prefix (e.g. /teacher-traking/login.php). */
+/** App URL with base_url prefix (e.g. /login.php). */
 function url(string $path = ''): string
 {
     static $base = null;
@@ -457,7 +457,7 @@ function save_teacher_avatar(array $file, int $teacherId): ?string
     if (($file['size'] ?? 0) > 3 * 1024 * 1024) {
         throw new RuntimeException('Photo max size 3MB.');
     }
-    $dir = __DIR__ . '/../teacher-traking/storage/uploads/avatars';
+    $dir = __DIR__ . '/../storage/uploads/avatars';
     if (!is_dir($dir)) {
         mkdir($dir, 0775, true);
     }
@@ -479,7 +479,7 @@ function store_review_evidence_photos(int $classId, array $filesField): array
         'image/png' => 'png',
         'image/webp' => 'webp',
     ];
-    $dir = __DIR__ . '/../teacher-traking/storage/uploads/reviews';
+    $dir = __DIR__ . '/../storage/uploads/reviews';
     if (!is_dir($dir)) {
         mkdir($dir, 0775, true);
     }
@@ -654,17 +654,17 @@ HTML;
 
 function brand_logo_url(): string
 {
-    $jpg = __DIR__ . '/../teacher-traking/favicon_io/logo-medico.jpg';
+    $jpg = __DIR__ . '/../favicon_io/logo-medico.jpg';
     if (is_file($jpg)) {
         return brand_asset('logo-medico.jpg') . '?v=' . filemtime($jpg);
     }
-    $png = __DIR__ . '/../teacher-traking/favicon_io/logo-medico.png';
+    $png = __DIR__ . '/../favicon_io/logo-medico.png';
     if (is_file($png)) {
         return brand_asset('logo-medico.png') . '?v=' . filemtime($png);
     }
     return brand_asset('android-chrome-512x512.png');
 }
 
-require_once __DIR__ . '/teacher-traking/notifications.php';
+require_once __DIR__ . '/notifications.php';
 require_once __DIR__ . '/mail.php';
 require_once __DIR__ . '/pagination.php';

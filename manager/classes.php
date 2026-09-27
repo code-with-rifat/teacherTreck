@@ -29,23 +29,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'creat
 
     if (!$teacherId || !$classDate || !in_array($category, ['1st_timer', '2nd_timer'], true)) {
         flash('error', 'Teacher, date এবং class type দিতে হবে।');
-        redirect('/teacher-traking/manager/classes.php?new=1');
+        redirect('/manager/classes.php?new=1');
     }
     if ($subject === '' || !in_array($subject, $subjects, true)) {
         flash('error', 'Subject select করুন।');
-        redirect('/teacher-traking/manager/classes.php?new=1');
+        redirect('/manager/classes.php?new=1');
     }
     if ($lectureNo < 1 || $lectureNo > 200) {
         flash('error', 'Lecture number 1–200 দিতে হবে।');
-        redirect('/teacher-traking/manager/classes.php?new=1');
+        redirect('/manager/classes.php?new=1');
     }
     if (!$slots) {
         flash('error', 'কমপক্ষে একটা time schedule select করুন (৭ / ১০ / ১ / ৪)।');
-        redirect('/teacher-traking/manager/classes.php?new=1');
+        redirect('/manager/classes.php?new=1');
     }
     if (count($slots) > 4) {
         flash('error', 'একদিনে সর্বোচ্চ ৪টা schedule।');
-        redirect('/teacher-traking/manager/classes.php?new=1');
+        redirect('/manager/classes.php?new=1');
     }
 
     $ok = $pdo->prepare(
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'creat
     $ok->execute([$teacherId]);
     if (!$ok->fetch()) {
         flash('error', 'Teacher not found or inactive.');
-        redirect('/teacher-traking/manager/classes.php?new=1');
+        redirect('/manager/classes.php?new=1');
     }
 
     $dup = $pdo->prepare(
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'creat
 
     if ($created === 0) {
         flash('error', 'কোনো schedule তৈরি হয়নি — সব slot আগে থেকেই assign আছে: ' . implode(', ', $skipped));
-        redirect('/teacher-traking/manager/classes.php?new=1');
+        redirect('/manager/classes.php?new=1');
     }
 
     // Notify teacher as soon as classes are assigned
@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'creat
         $msg .= ' Skip: ' . implode(', ', $skipped);
     }
     flash('success', $msg);
-    redirect($firstId ? '/teacher-traking/manager/class.php?id=' . $firstId : '/teacher-traking/manager/classes.php');
+    redirect($firstId ? '/manager/class.php?id=' . $firstId : '/manager/classes.php');
 }
 
 $from = $_GET['from'] ?? date('Y-m-d');
@@ -188,8 +188,8 @@ $pageTitle = 'Classes';
 $pageSub = 'Create & assign · ' . $branch['name'];
 $displayName = $branch['name'];
 $topActions = $showForm
-    ? '<a class="btn btn-secondary btn-sm" href="/teacher-traking/manager/classes.php" style="width:auto">Back to list</a>'
-    : '<a class="btn btn-primary btn-sm" href="/teacher-traking/manager/classes.php?new=1" style="width:auto">+ Assign class</a>';
+    ? '<a class="btn btn-secondary btn-sm" href="/manager/classes.php" style="width:auto">Back to list</a>'
+    : '<a class="btn btn-primary btn-sm" href="/manager/classes.php?new=1" style="width:auto">+ Assign class</a>';
 require __DIR__ . '/../includes/app_header.php';
 ?>
 
@@ -215,7 +215,7 @@ require __DIR__ . '/../includes/app_header.php';
                 </select>
                 <?php if ($preselectTeacher): ?>
                   <div style="margin-top:.45rem;font-size:.85rem">
-                    <a href="/teacher-traking/manager/teacher.php?id=<?= $preselectTeacher ?>">Teacher profile দেখুন →</a>
+                    <a href="/manager/teacher.php?id=<?= $preselectTeacher ?>">Teacher profile দেখুন →</a>
                   </div>
                 <?php endif; ?>
               </div>
@@ -348,8 +348,8 @@ require __DIR__ . '/../includes/app_header.php';
                           <?php endif; ?>
                         </div>
                         <div class="row-action" style="display:flex;gap:.4rem;flex-wrap:wrap">
-                          <a class="btn btn-primary btn-sm" href="/teacher-traking/manager/class.php?id=<?= (int) $c['id'] ?>">Track class</a>
-                          <a class="btn btn-secondary btn-sm" href="/teacher-traking/manager/teacher.php?id=<?= (int) $c['teacher_id'] ?>">View profile</a>
+                          <a class="btn btn-primary btn-sm" href="/manager/class.php?id=<?= (int) $c['id'] ?>">Track class</a>
+                          <a class="btn btn-secondary btn-sm" href="/manager/teacher.php?id=<?= (int) $c['teacher_id'] ?>">View profile</a>
                         </div>
                       </div>
                     </details>

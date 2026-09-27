@@ -25,7 +25,7 @@ $st->execute([$classId]);
 $focus = $st->fetch();
 if (!$focus) {
     flash('error', 'Class not found.');
-    redirect('/teacher-traking/admin/reviews.php');
+    redirect('/admin/reviews.php');
 }
 
 $teacherId = (int) $focus['teacher_id'];
@@ -77,7 +77,7 @@ require __DIR__ . '/../includes/app_header.php';
         <div class="dg-teach-top">
           <h1 class="dg-hello"><?= h($focus['teacher_name']) ?></h1>
           <div class="dg-toolbar">
-            <a class="btn btn-secondary btn-sm" href="/teacher-traking/admin/reviews.php">← Reviews</a>
+            <a class="btn btn-secondary btn-sm" href="/admin/reviews.php">← Reviews</a>
           </div>
         </div>
         <p class="admin-page-sub">
