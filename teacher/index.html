@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teacher Dashboard — MEDICO</title>
+  <link rel="stylesheet" href="../assets/css/app.css" />
+</head>
+<body>
+  <div id="overlay" class="overlay"></div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-mark">
+        <div class="logo">M</div>
+        <div>
+          <h1>MEDICO</h1>
+          <span>Teacher</span>
+        </div>
+      </div>
+      <nav class="nav-section">
+        <a class="nav-link active" href="#"><span class="icon">▣</span> Dashboard</a>
+        <a class="nav-link" href="#classes"><span class="icon">▦</span> My classes</a>
+        <a class="nav-link" href="#stats"><span class="icon">◉</span> Performance</a>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="user-chip">
+          <div class="avatar" id="avatar">T</div>
+          <div class="meta">
+            <div class="name" id="userName">Teacher</div>
+            <div class="role">Teacher</div>
+          </div>
+        </div>
+        <a href="#" id="logoutBtn" class="nav-link" style="margin-top:.5rem"><span class="icon">↩</span> Sign out</a>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:.75rem">
+          <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+          <div>
+            <h1>Today’s schedule</h1>
+            <p>Check in only when you are inside the branch geofence</p>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="metrics" id="metrics">
+          <div class="skel-overlay" aria-hidden="true">
+            <div class="skel skel-metric"></div>
+            <div class="skel skel-metric"></div>
+            <div class="skel skel-metric"></div>
+            <div class="skel skel-metric"></div>
+          </div>
+          <div class="metric-card"><div class="label">Completed</div><div class="value" id="mCompleted">—</div><div class="hint">Total classes</div></div>
+          <div class="metric-card"><div class="label">Check-ins</div><div class="value" id="mCheckins">—</div><div class="hint">Verified presence</div></div>
+          <div class="metric-card"><div class="label">Best ratings</div><div class="value" id="mBest">—</div><div class="hint">Self-assessed quality</div></div>
+          <div class="metric-card"><div class="label">Upcoming</div><div class="value" id="mUpcoming">—</div><div class="hint">Scheduled ahead</div></div>
+        </div>
+
+        <section class="panel" id="classes">
+          <div class="panel-header">
+            <h3>Upcoming classes</h3>
+          </div>
+          <div class="table-wrap">
+            <table class="data">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Branch</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="classRows">
+                <tr><td colspan="6" class="empty-state">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- Check-in / Check-out modal -->
+  <div class="modal" id="sessionModal">
+    <div class="modal-card">
+      <header>
+        <h3 id="modalTitle">Class session</h3>
+        <button class="btn btn-ghost" id="closeModal">✕</button>
+      </header>
+      <div class="body">
+        <div id="modalAlert" class="alert"></div>
+        <div id="checkinPane">
+          <p id="classMeta" style="margin-bottom:1rem;color:var(--slate-500);font-size:.9rem"></p>
+          <div id="geoStatus" class="checkin-status">Waiting for GPS…</div>
+          <button class="btn btn-primary" style="margin-top:1rem" id="checkInBtn" disabled>Check in</button>
+        </div>
+        <div id="checkoutPane" class="hidden">
+          <div class="form-group">
+            <label for="student_count">Student attendance count</label>
+            <input id="student_count" type="number" min="0" />
+          </div>
+          <div class="form-group">
+            <label for="quality_rating">Class quality review</label>
+            <select id="quality_rating">
+              <option value="best">Best</option>
+              <option value="good" selected>Good</option>
+              <option value="average">Average</option>
+              <option value="repeat_class">Repeat class</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="teacher_notes">Notes (optional)</label>
+            <textarea id="teacher_notes"></textarea>
+          </div>
+          <button class="btn btn-primary" id="checkOutBtn">End class & submit</button>
+        </div>
+        <div id="reviewPane" class="hidden">
+          <p style="margin-bottom:1rem;font-size:.9rem;color:var(--slate-500)">Branch & logistics review (sent to Admin)</p>
+          <div class="grid-2">
+            <div class="form-group"><label>Staircase cleanliness</label><select id="cleanliness_staircase"><option>excellent</option><option selected>good</option><option>average</option><option>poor</option></select></div>
+            <div class="form-group"><label>Classroom cleanliness</label><select id="cleanliness_classroom"><option>excellent</option><option selected>good</option><option>average</option><option>poor</option></select></div>
+            <div class="form-group"><label>Teachers’ room</label><select id="cleanliness_teachers_room"><option>excellent</option><option selected>good</option><option>average</option><option>poor</option></select></div>
+            <div class="form-group"><label>Fan</label><select id="facility_fan"><option selected>working</option><option>issue</option><option>not_available</option></select></div>
+            <div class="form-group"><label>AC</label><select id="facility_ac"><option selected>working</option><option>issue</option><option>not_available</option></select></div>
+            <div class="form-group"><label>Sound system</label><select id="facility_sound_system"><option selected>working</option><option>issue</option><option>not_available</option></select></div>
+            <div class="form-group"><label>Projector</label><select id="facility_projector"><option selected>working</option><option>issue</option><option>not_available</option></select></div>
+            <div class="form-group"><label>Staff dress code</label><select id="staff_dress_code"><option>excellent</option><option selected>good</option><option>average</option><option>poor</option></select></div>
+            <div class="form-group"><label>Staff grooming</label><select id="staff_grooming"><option>excellent</option><option selected>good</option><option>average</option><option>poor</option></select></div>
+            <div class="form-group"><label>Staff behavior</label><select id="staff_behavior"><option>excellent</option><option selected>good</option><option>average</option><option>poor</option></select></div>
+          </div>
+          <div class="form-group" style="margin-top:.5rem">
+            <label><input type="checkbox" id="reminder_call_received" /> Reminder call received before class</label>
+          </div>
+          <div id="transportBlock" class="hidden">
+            <div class="form-group">
+              <label>Transport & travel review</label>
+              <select id="transport_rating"><option>excellent</option><option selected>good</option><option>average</option><option>poor</option></select>
+            </div>
+            <div class="form-group">
+              <label>Transport comments</label>
+              <textarea id="transport_comments"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Additional comments</label>
+            <textarea id="additional_comments"></textarea>
+          </div>
+          <button class="btn btn-primary" id="reviewBtn">Submit review</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+    const user = Medico.requireAuth(['teacher']);
+    if (!user) throw new Error('auth');
+    Medico.bindShell();
+
+    const profile = Medico.currentProfile();
+    document.getElementById('userName').textContent = profile?.full_name || user.email;
+    document.getElementById('avatar').textContent = Medico.initials(profile?.full_name || 'T');
+
+    let activeClass = null;
+    let lastCoords = null;
+
+    async function loadDashboard() {
+      const metrics = document.getElementById('metrics');
+      const tbody = document.getElementById('classRows');
+      Medico.showSkeleton(metrics);
+      tbody.innerHTML = `<tr><td colspan="6"><div class="table-skeleton">
+        <div class="skel skel-row"></div><div class="skel skel-row"></div><div class="skel skel-row"></div>
+      </div></td></tr>`;
+
+      try {
+        const { ok, data } = await Medico.api('/teacher/dashboard');
+        if (!ok) {
+          tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><strong>Could not load</strong>${data.message || 'Try again'}</div></td></tr>`;
+          return;
+        }
+        const { upcoming, stats } = data.data;
+        document.getElementById('mCompleted').textContent = stats?.total_completed ?? 0;
+        document.getElementById('mCheckins').textContent = stats?.total_checkins ?? 0;
+        document.getElementById('mBest').textContent = stats?.rating_best ?? 0;
+        document.getElementById('mUpcoming').textContent = upcoming?.length ?? 0;
+
+        if (!upcoming?.length) {
+          tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><strong>No upcoming classes</strong>Your branch manager will assign sessions here.</div></td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = upcoming.map((c) => `
+          <tr>
+            <td>${Medico.formatDate(c.class_date)}</td>
+            <td>${Medico.formatTime(c.time_slot)}</td>
+            <td>${c.branch_name}<div style="font-size:.75rem;color:var(--slate-500)">${c.city}${c.is_outside_dhaka == 1 ? ' · Outside Dhaka' : ''}</div></td>
+            <td>${c.course_category === '1st_timer' ? '1st Timer' : '2nd Timer'}</td>
+            <td>${Medico.badge(c.status)}</td>
+            <td><button class="btn btn-secondary btn-sm" data-open="${c.id}">Open</button></td>
+          </tr>
+        `).join('');
+
+        tbody.querySelectorAll('[data-open]').forEach((btn) => {
+          btn.addEventListener('click', () => openSession(upcoming.find((x) => String(x.id) === btn.dataset.open)));
+        });
+      } finally {
+        Medico.hideSkeleton(metrics);
+      }
+    }
+
+    function openSession(c) {
+      activeClass = c;
+      document.getElementById('sessionModal').classList.add('show');
+      document.getElementById('modalTitle').textContent = `${c.branch_name} · ${Medico.formatTime(c.time_slot)}`;
+      document.getElementById('classMeta').textContent =
+        `${Medico.formatDate(c.class_date)} · Radius ${c.checkin_radius_m}m · ${c.course_category === '1st_timer' ? '1st Timer' : '2nd Timer'}`;
+      document.getElementById('modalAlert').className = 'alert';
+
+      const checkedIn = !!c.check_in_at;
+      const checkedOut = !!c.check_out_at;
+      document.getElementById('checkinPane').classList.toggle('hidden', checkedIn);
+      document.getElementById('checkoutPane').classList.toggle('hidden', !checkedIn || checkedOut);
+      document.getElementById('reviewPane').classList.add('hidden');
+      document.getElementById('transportBlock').classList.toggle('hidden', c.is_outside_dhaka != 1);
+
+      if (!checkedIn) prepareCheckIn();
+    }
+
+    async function prepareCheckIn() {
+      const status = document.getElementById('geoStatus');
+      const btn = document.getElementById('checkInBtn');
+      btn.disabled = true;
+      status.className = 'checkin-status';
+      status.textContent = 'Acquiring GPS…';
+      try {
+        lastCoords = await Medico.getLocation();
+        status.textContent = `Location ready (±${Math.round(lastCoords.accuracy)}m). Tap Check in when at the branch.`;
+        btn.disabled = false;
+      } catch (err) {
+        status.className = 'checkin-status out';
+        status.textContent = 'Unable to get location. Enable GPS and retry.';
+      }
+    }
+
+    document.getElementById('checkInBtn').addEventListener('click', async () => {
+      const alert = document.getElementById('modalAlert');
+      try {
+        lastCoords = lastCoords || await Medico.getLocation();
+      } catch {
+        Medico.showAlert(alert, 'GPS required for check-in');
+        return;
+      }
+      const { ok, data } = await Medico.api(`/teacher/classes/${activeClass.id}/check-in`, {
+        method: 'POST',
+        body: lastCoords,
+      });
+      if (!ok) {
+        Medico.showAlert(alert, data.message + (data.distance_m != null ? ` (${data.distance_m}m / ${data.allowed_m}m)` : ''));
+        document.getElementById('geoStatus').className = 'checkin-status out';
+        document.getElementById('geoStatus').textContent = data.message;
+        return;
+      }
+      Medico.showAlert(alert, 'Checked in successfully', 'success');
+      activeClass.check_in_at = new Date().toISOString();
+      document.getElementById('checkinPane').classList.add('hidden');
+      document.getElementById('checkoutPane').classList.remove('hidden');
+      loadDashboard();
+    });
+
+    document.getElementById('checkOutBtn').addEventListener('click', async () => {
+      const alert = document.getElementById('modalAlert');
+      const { ok, data } = await Medico.api(`/teacher/classes/${activeClass.id}/check-out`, {
+        method: 'POST',
+        body: {
+          student_count_teacher: document.getElementById('student_count').value || null,
+          quality_rating: document.getElementById('quality_rating').value,
+          teacher_notes: document.getElementById('teacher_notes').value,
+        },
+      });
+      if (!ok) {
+        Medico.showAlert(alert, data.message);
+        return;
+      }
+      Medico.showAlert(alert, 'Class ended. Please complete the logistics review.', 'success');
+      document.getElementById('checkoutPane').classList.add('hidden');
+      document.getElementById('reviewPane').classList.remove('hidden');
+      document.getElementById('transportBlock').classList.toggle('hidden', !data.data?.transport_applicable);
+      loadDashboard();
+    });
+
+    document.getElementById('reviewBtn').addEventListener('click', async () => {
+      const alert = document.getElementById('modalAlert');
+      const body = {
+        cleanliness_staircase: document.getElementById('cleanliness_staircase').value,
+        cleanliness_classroom: document.getElementById('cleanliness_classroom').value,
+        cleanliness_teachers_room: document.getElementById('cleanliness_teachers_room').value,
+        facility_fan: document.getElementById('facility_fan').value,
+        facility_ac: document.getElementById('facility_ac').value,
+        facility_sound_system: document.getElementById('facility_sound_system').value,
+        facility_projector: document.getElementById('facility_projector').value,
+        staff_dress_code: document.getElementById('staff_dress_code').value,
+        staff_grooming: document.getElementById('staff_grooming').value,
+        staff_behavior: document.getElementById('staff_behavior').value,
+        reminder_call_received: document.getElementById('reminder_call_received').checked,
+        additional_comments: document.getElementById('additional_comments').value,
+      };
+      if (activeClass.is_outside_dhaka == 1) {
+        body.transport_rating = document.getElementById('transport_rating').value;
+        body.transport_comments = document.getElementById('transport_comments').value;
+      }
+      const { ok, data } = await Medico.api(`/teacher/classes/${activeClass.id}/review`, {
+        method: 'POST',
+        body,
+      });
+      Medico.showAlert(alert, data.message, ok ? 'success' : 'error');
+      if (ok) setTimeout(() => {
+        document.getElementById('sessionModal').classList.remove('show');
+        loadDashboard();
+      }, 900);
+    });
+
+    document.getElementById('closeModal').addEventListener('click', () => {
+      document.getElementById('sessionModal').classList.remove('show');
+    });
+
+    loadDashboard();
+  </script>
+</body>
+</html>

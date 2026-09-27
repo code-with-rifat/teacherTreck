@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Super Admin — MEDICO</title>
+  <link rel="stylesheet" href="../assets/css/app.css" />
+</head>
+<body>
+  <div id="overlay" class="overlay"></div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-mark">
+        <div class="logo">M</div>
+        <div>
+          <h1>MEDICO</h1>
+          <span>Super Admin</span>
+        </div>
+      </div>
+      <nav class="nav-section">
+        <a class="nav-link active" href="#users"><span class="icon">◎</span> Role management</a>
+        <a class="nav-link" href="#branches"><span class="icon">▦</span> Branches</a>
+        <a class="nav-link" href="#settings"><span class="icon">⚙</span> System settings</a>
+        <a class="nav-link" href="../admin/index.html"><span class="icon">▣</span> Admin console</a>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="user-chip">
+          <div class="avatar">S</div>
+          <div class="meta">
+            <div class="name">Super Admin</div>
+            <div class="role">Full access</div>
+          </div>
+        </div>
+        <a href="#" id="logoutBtn" class="nav-link" style="margin-top:.5rem"><span class="icon">↩</span> Sign out</a>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:.75rem">
+          <button class="menu-toggle" id="menuToggle">☰</button>
+          <div>
+            <h1>System authority</h1>
+            <p>Users, branch assignment, and global configuration</p>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="grid-2">
+          <section class="panel" id="users">
+            <div class="panel-header"><h3>Create user</h3></div>
+            <div class="panel-body">
+              <div id="userAlert" class="alert"></div>
+              <div class="form-group"><label>Email</label><input id="newEmail" type="email" /></div>
+              <div class="form-group"><label>Password</label><input id="newPass" type="password" minlength="8" /></div>
+              <div class="form-group">
+                <label>Role</label>
+                <select id="newRole">
+                  <option value="branch_manager">Branch Manager</option>
+                  <option value="admin">Admin</option>
+                  <option value="teacher">Teacher</option>
+                  <option value="super_admin">Super Admin</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" id="createUser" style="width:auto">Create user</button>
+            </div>
+          </section>
+
+          <section class="panel" id="branches">
+            <div class="panel-header"><h3>Assign branch manager</h3></div>
+            <div class="panel-body">
+              <div id="assignAlert" class="alert"></div>
+              <div class="form-group"><label>Branch ID</label><input id="branchId" type="number" /></div>
+              <div class="form-group"><label>Manager user ID</label><input id="managerUserId" type="number" /></div>
+              <button class="btn btn-primary" id="assignMgr" style="width:auto">Assign</button>
+              <div style="margin-top:1.25rem">
+                <h4 style="font-size:.9rem;margin-bottom:.5rem">Branches</h4>
+                <div id="branchList" style="font-size:.85rem;color:var(--slate-700)"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel" id="settings">
+          <div class="panel-header"><h3>System settings</h3></div>
+          <div class="panel-body">
+            <div id="settingsList"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+    const user = Medico.requireAuth(['super_admin']);
+    if (!user) throw new Error('auth');
+    Medico.bindShell();
+
+    document.getElementById('createUser').addEventListener('click', async () => {
+      const { ok, data } = await Medico.api('/super/users', {
+        method: 'POST',
+        body: {
+          email: document.getElementById('newEmail').value.trim(),
+          password: document.getElementById('newPass').value,
+          role: document.getElementById('newRole').value,
+        },
+      });
+      Medico.showAlert(document.getElementById('userAlert'), data.message + (ok && data.data?.id ? ` (ID ${data.data.id})` : ''), ok ? 'success' : 'error');
+    });
+
+    document.getElementById('assignMgr').addEventListener('click', async () => {
+      const { ok, data } = await Medico.api('/super/assign-manager', {
+        method: 'POST',
+        body: {
+          branch_id: document.getElementById('branchId').value,
+          user_id: document.getElementById('managerUserId').value,
+        },
+      });
+      Medico.showAlert(document.getElementById('assignAlert'), data.message, ok ? 'success' : 'error');
+      if (ok) loadBranches();
+    });
+
+    async function loadBranches() {
+      const { ok, data } = await Medico.api('/admin/branches');
+      if (!ok) return;
+      document.getElementById('branchList').innerHTML = (data.data || []).map((b) =>
+        `<div style="padding:.4rem 0;border-bottom:1px solid var(--border)"><strong>#${b.id}</strong> ${b.name} (${b.code}) · Manager: ${b.manager_email || 'unassigned'}</div>`
+      ).join('') || 'No branches yet.';
+    }
+
+    async function loadSettings() {
+      const { ok, data } = await Medico.api('/super/settings');
+      if (!ok) return;
+      document.getElementById('settingsList').innerHTML = (data.data || []).map((s) =>
+        `<div style="display:flex;justify-content:space-between;gap:1rem;padding:.65rem 0;border-bottom:1px solid var(--border)">
+          <div><strong>${s.setting_key}</strong><div style="font-size:.8rem;color:var(--slate-500)">${s.description || ''}</div></div>
+          <code>${s.setting_value}</code>
+        </div>`
+      ).join('');
+    }
+
+    loadBranches();
+    loadSettings();
+  </script>
+</body>
+</html>

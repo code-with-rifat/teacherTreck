@@ -1,0 +1,61 @@
+<?php
+/**
+ * MEDICO CMS — Application configuration
+ */
+
+declare(strict_types=1);
+
+return [
+    'app_name'   => 'MEDICO',
+    'app_tagline'=> 'Class & Teacher Management',
+    'base_url'   => '/teacherTreck',
+    'api_prefix' => '/teacherTreck/api',
+    'timezone'   => 'Asia/Dhaka',
+    'debug'      => true,
+
+    'db' => [
+        'host'    => '127.0.0.1',
+        'port'    => 3306,
+        'name'    => 'medico_cms',
+        'user'    => 'root',
+        'pass'    => '',
+        'charset' => 'utf8mb4',
+    ],
+
+    'jwt' => [
+        // Change in production
+        'secret'  => 'medico-change-me-in-production-32chars!',
+        'ttl'     => 86400 * 7, // 7 days
+        'issuer'  => 'medico-cms',
+    ],
+
+    'upload' => [
+        'signature_sheets' => __DIR__ . '/../storage/uploads/signatures',
+        'avatars'          => __DIR__ . '/../storage/uploads/avatars',
+        'max_bytes'        => 5 * 1024 * 1024,
+        'allowed_mimes'    => ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'],
+    ],
+
+    'geofence' => [
+        'default_radius_m' => 150,
+    ],
+
+    // Google Maps JavaScript API key (Maps + Geolocation). Also editable in Admin → Dashboard.
+    'google_maps_api_key' => '',
+
+    /*
+     | Mail — password reset codes
+     | Gmail: enable 2FA → create App Password → put below.
+     | smtp_user / smtp_pass খালি রাখলে email যাবে না।
+     */
+    'mail' => [
+        'driver'           => 'smtp', // smtp | mail | log
+        'from_email'       => 'noreply@medico.local',
+        'from_name'        => 'MEDICO',
+        'smtp_host'        => 'smtp.gmail.com',
+        'smtp_port'        => 587,
+        'smtp_encryption'  => 'tls', // tls | ssl
+        'smtp_user'        => '', // e.g. your@gmail.com
+        'smtp_pass'        => '', // Gmail App Password
+    ],
+];

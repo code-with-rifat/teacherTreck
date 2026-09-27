@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Branch Manager — MEDICO</title>
+  <link rel="stylesheet" href="../assets/css/app.css" />
+</head>
+<body>
+  <div id="overlay" class="overlay"></div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-mark">
+        <div class="logo">M</div>
+        <div>
+          <h1>MEDICO</h1>
+          <span>Branch Manager</span>
+        </div>
+      </div>
+      <nav class="nav-section">
+        <a class="nav-link active" href="#"><span class="icon">▣</span> Today</a>
+        <a class="nav-link" href="#schedule"><span class="icon">▦</span> Schedule class</a>
+        <a class="nav-link" href="#location"><span class="icon">⌖</span> Branch location</a>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="user-chip">
+          <div class="avatar" id="avatar">B</div>
+          <div class="meta">
+            <div class="name" id="userName">Manager</div>
+            <div class="role">Branch Manager</div>
+          </div>
+        </div>
+        <a href="#" id="logoutBtn" class="nav-link" style="margin-top:.5rem"><span class="icon">↩</span> Sign out</a>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:.75rem">
+          <button class="menu-toggle" id="menuToggle">☰</button>
+          <div>
+            <h1 id="branchTitle">Branch operations</h1>
+            <p id="branchSub">Manage schedule, reminders, and attendance sheets</p>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-sm" id="openCreate" style="width:auto">+ New class</button>
+      </header>
+
+      <div class="content">
+        <div class="metrics">
+          <div class="metric-card"><div class="label">Today</div><div class="value" id="mToday">—</div><div class="hint">Scheduled</div></div>
+          <div class="metric-card"><div class="label">Completed</div><div class="value" id="mDone">—</div><div class="hint">Finished today</div></div>
+          <div class="metric-card"><div class="label">Reminders</div><div class="value" id="mRemind">—</div><div class="hint">Pending calls</div></div>
+          <div class="metric-card"><div class="label">Setup</div><div class="value" id="mSetup" style="font-size:1.2rem">—</div><div class="hint">Geofence status</div></div>
+        </div>
+
+        <section class="panel">
+          <div class="panel-header"><h3>Today’s classes</h3></div>
+          <div class="table-wrap">
+            <table class="data">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Teacher</th>
+                  <th>Category</th>
+                  <th>Reminder</th>
+                  <th>Attendance</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="todayRows"><tr><td colspan="7">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel" id="location">
+          <div class="panel-header"><h3>Branch location setup</h3></div>
+          <div class="panel-body checkin-card">
+            <div>
+              <p style="color:var(--slate-500);margin-bottom:1rem;font-size:.9rem">
+                Confirm exact coordinates for teacher geofenced check-in. Use your current GPS at the branch entrance.
+              </p>
+              <div class="form-group">
+                <label>Address</label>
+                <textarea id="branchAddress"></textarea>
+              </div>
+              <div class="form-row">
+                <div class="form-group"><label>Latitude</label><input id="lat" /></div>
+                <div class="form-group"><label>Longitude</label><input id="lng" /></div>
+              </div>
+              <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+                <button class="btn btn-secondary" id="useGps" type="button" style="width:auto">Use my GPS</button>
+                <button class="btn btn-primary" id="saveLocation" type="button" style="width:auto">Save location</button>
+              </div>
+              <div id="locAlert" class="alert" style="margin-top:1rem"></div>
+            </div>
+            <div class="checkin-status" id="locMeta">Branch coordinates drive all teacher check-ins for this site.</div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="createModal">
+    <div class="modal-card">
+      <header>
+        <h3>Schedule a class</h3>
+        <button class="btn btn-ghost" id="closeCreate">✕</button>
+      </header>
+      <div class="body">
+        <div id="createAlert" class="alert"></div>
+        <div class="form-group">
+          <label>Teacher</label>
+          <select id="teacher_id"></select>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Date</label><input type="date" id="class_date" required /></div>
+          <div class="form-group">
+            <label>Time slot</label>
+            <select id="time_slot">
+              <option value="07:00:00">7:00 AM</option>
+              <option value="10:00:00">10:00 AM</option>
+              <option value="13:00:00">1:00 PM</option>
+              <option value="16:00:00">4:00 PM</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Course category</label>
+          <select id="course_category">
+            <option value="1st_timer">1st Timer</option>
+            <option value="2nd_timer">2nd Timer</option>
+          </select>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-secondary" id="cancelCreate" style="width:auto">Cancel</button>
+        <button class="btn btn-primary" id="saveClass" style="width:auto">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="verifyModal">
+    <div class="modal-card">
+      <header>
+        <h3>Verify attendance</h3>
+        <button class="btn btn-ghost" id="closeVerify">✕</button>
+      </header>
+      <div class="body">
+        <div id="verifyAlert" class="alert"></div>
+        <div class="form-group">
+          <label>Final student count</label>
+          <input type="number" id="student_count_manager" min="0" />
+        </div>
+        <div class="form-group">
+          <label>Signature sheet (photo/PDF)</label>
+          <input type="file" id="signature_sheet" accept="image/*,application/pdf" />
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" id="saveVerify" style="width:auto">Upload & verify</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+    const user = Medico.requireAuth(['branch_manager']);
+    if (!user) throw new Error('auth');
+    Medico.bindShell();
+
+    let branch = null;
+    let verifyClassId = null;
+
+    async function load() {
+      const { ok, data } = await Medico.api('/manager/dashboard');
+      if (!ok) {
+        alert(data.message || 'Failed to load');
+        return;
+      }
+      branch = data.data.branch;
+      const metrics = data.data.metrics || {};
+      document.getElementById('branchTitle').textContent = branch.name;
+      document.getElementById('branchSub').textContent = branch.address;
+      document.getElementById('userName').textContent = branch.name;
+      document.getElementById('avatar').textContent = Medico.initials(branch.name);
+      document.getElementById('mToday').textContent = metrics.today_total ?? 0;
+      document.getElementById('mDone').textContent = metrics.today_done ?? 0;
+      document.getElementById('mRemind').textContent = metrics.pending_reminders ?? 0;
+      document.getElementById('mSetup').textContent = branch.setup_completed == 1 ? 'Ready' : 'Needed';
+      document.getElementById('branchAddress').value = branch.address || '';
+      document.getElementById('lat').value = branch.latitude || '';
+      document.getElementById('lng').value = branch.longitude || '';
+      document.getElementById('locMeta').textContent =
+        branch.latitude ? `Current pin: ${branch.latitude}, ${branch.longitude}` : 'Location not set yet.';
+
+      const rows = data.data.today || [];
+      const tbody = document.getElementById('todayRows');
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><strong>No classes today</strong>Create a schedule to get started.</div></td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.map((c) => `
+        <tr>
+          <td>${Medico.formatTime(c.time_slot)}</td>
+          <td>${c.teacher_name}<div style="font-size:.75rem;color:var(--slate-500)">${c.teacher_phone || ''}</div></td>
+          <td>${c.course_category === '1st_timer' ? '1st Timer' : '2nd Timer'}</td>
+          <td>${c.reminder_call_made == 1 ? Medico.badge('completed') : Medico.badge('pending')}</td>
+          <td>${c.student_count_manager ?? c.student_count_teacher ?? '—'}</td>
+          <td>${Medico.badge(c.status)}</td>
+          <td style="white-space:nowrap">
+            ${c.reminder_call_made != 1 ? `<button class="btn btn-secondary btn-sm" data-remind="${c.id}">Log call</button>` : ''}
+            <button class="btn btn-secondary btn-sm" data-verify="${c.id}">Verify</button>
+          </td>
+        </tr>
+      `).join('');
+
+      tbody.querySelectorAll('[data-remind]').forEach((b) => b.addEventListener('click', () => markReminder(b.dataset.remind)));
+      tbody.querySelectorAll('[data-verify]').forEach((b) => b.addEventListener('click', () => {
+        verifyClassId = b.dataset.verify;
+        document.getElementById('verifyModal').classList.add('show');
+      }));
+    }
+
+    async function markReminder(id) {
+      await Medico.api(`/manager/classes/${id}/reminder`, { method: 'POST' });
+      load();
+    }
+
+    async function loadTeachers() {
+      const { ok, data } = await Medico.api('/manager/teachers');
+      if (!ok) return;
+      const sel = document.getElementById('teacher_id');
+      sel.innerHTML = (data.data || []).map((t) => `<option value="${t.id}">${t.full_name}</option>`).join('');
+    }
+
+    document.getElementById('openCreate').addEventListener('click', async () => {
+      await loadTeachers();
+      document.getElementById('class_date').value = new Date().toISOString().slice(0, 10);
+      document.getElementById('createModal').classList.add('show');
+    });
+    document.getElementById('closeCreate').addEventListener('click', () => document.getElementById('createModal').classList.remove('show'));
+    document.getElementById('cancelCreate').addEventListener('click', () => document.getElementById('createModal').classList.remove('show'));
+    document.getElementById('closeVerify').addEventListener('click', () => document.getElementById('verifyModal').classList.remove('show'));
+
+    document.getElementById('saveClass').addEventListener('click', async () => {
+      const { ok, data } = await Medico.api('/manager/classes', {
+        method: 'POST',
+        body: {
+          teacher_id: document.getElementById('teacher_id').value,
+          class_date: document.getElementById('class_date').value,
+          time_slot: document.getElementById('time_slot').value,
+          course_category: document.getElementById('course_category').value,
+        },
+      });
+      Medico.showAlert(document.getElementById('createAlert'), data.message, ok ? 'success' : 'error');
+      if (ok) {
+        document.getElementById('createModal').classList.remove('show');
+        load();
+      }
+    });
+
+    document.getElementById('saveVerify').addEventListener('click', async () => {
+      const fd = new FormData();
+      fd.append('student_count_manager', document.getElementById('student_count_manager').value);
+      const file = document.getElementById('signature_sheet').files[0];
+      if (file) fd.append('signature_sheet', file);
+      const { ok, data } = await Medico.api(`/manager/classes/${verifyClassId}/verify`, {
+        method: 'POST',
+        body: fd,
+      });
+      Medico.showAlert(document.getElementById('verifyAlert'), data.message, ok ? 'success' : 'error');
+      if (ok) {
+        document.getElementById('verifyModal').classList.remove('show');
+        load();
+      }
+    });
+
+    document.getElementById('useGps').addEventListener('click', async () => {
+      try {
+        const pos = await Medico.getLocation();
+        document.getElementById('lat').value = pos.latitude.toFixed(7);
+        document.getElementById('lng').value = pos.longitude.toFixed(7);
+        Medico.showAlert(document.getElementById('locAlert'), 'GPS captured', 'success');
+      } catch {
+        Medico.showAlert(document.getElementById('locAlert'), 'Could not read GPS');
+      }
+    });
+
+    document.getElementById('saveLocation').addEventListener('click', async () => {
+      const { ok, data } = await Medico.api('/manager/branch/location', {
+        method: 'POST',
+        body: {
+          latitude: document.getElementById('lat').value,
+          longitude: document.getElementById('lng').value,
+          address: document.getElementById('branchAddress').value,
+        },
+      });
+      Medico.showAlert(document.getElementById('locAlert'), data.message, ok ? 'success' : 'error');
+      if (ok) load();
+    });
+
+    load();
+  </script>
+</body>
+</html>

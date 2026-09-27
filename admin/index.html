@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — MEDICO</title>
+  <link rel="stylesheet" href="../assets/css/app.css" />
+</head>
+<body>
+  <div id="overlay" class="overlay"></div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-mark">
+        <div class="logo">M</div>
+        <div>
+          <h1>MEDICO</h1>
+          <span>Admin</span>
+        </div>
+      </div>
+      <nav class="nav-section">
+        <a class="nav-link active" href="#overview"><span class="icon">▣</span> Overview</a>
+        <a class="nav-link" href="#geofence"><span class="icon">⌖</span> Geofencing</a>
+        <a class="nav-link" href="#quality"><span class="icon">◈</span> Quality & logistics</a>
+        <a class="nav-link" href="#teachers"><span class="icon">◎</span> Teachers</a>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="user-chip">
+          <div class="avatar">A</div>
+          <div class="meta">
+            <div class="name" id="userName">Admin</div>
+            <div class="role">Administrator</div>
+          </div>
+        </div>
+        <a href="#" id="logoutBtn" class="nav-link" style="margin-top:.5rem"><span class="icon">↩</span> Sign out</a>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:.75rem">
+          <button class="menu-toggle" id="menuToggle">☰</button>
+          <div>
+            <h1>Operations control</h1>
+            <p>Geofencing, quality flags, and network health</p>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="metrics" id="overview">
+          <div class="metric-card"><div class="label">Teachers</div><div class="value" id="mTeachers">—</div><div class="hint">Active roster</div></div>
+          <div class="metric-card"><div class="label">Branches</div><div class="value" id="mBranches">—</div><div class="hint">Active sites</div></div>
+          <div class="metric-card"><div class="label">Classes today</div><div class="value" id="mToday">—</div><div class="hint">Network-wide</div></div>
+          <div class="metric-card"><div class="label">Open issues</div><div class="value" id="mIssues">—</div><div class="hint">Last 7 days</div></div>
+        </div>
+
+        <section class="panel" id="geofence">
+          <div class="panel-header">
+            <h3>Geofence configuration</h3>
+            <button class="btn btn-primary btn-sm" id="saveGeo" style="width:auto">Save radius</button>
+          </div>
+          <div class="panel-body">
+            <div id="geoAlert" class="alert"></div>
+            <div class="form-group" style="max-width:280px">
+              <label>Global check-in radius (meters)</label>
+              <input type="number" id="globalRadius" min="20" max="5000" />
+            </div>
+            <p style="font-size:.85rem;color:var(--slate-500);margin-bottom:1rem">
+              Branch-specific overrides leave the global value when empty.
+            </p>
+            <div class="table-wrap">
+              <table class="data">
+                <thead>
+                  <tr><th>Branch</th><th>City</th><th>Coords</th><th>Override (m)</th></tr>
+                </thead>
+                <tbody id="geoRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="quality">
+          <div class="panel-header">
+            <h3>Quality & logistics flags</h3>
+            <label style="font-size:.85rem;font-weight:500;display:flex;align-items:center;gap:.4rem">
+              <input type="checkbox" id="flaggedOnly" checked /> Flagged only
+            </label>
+          </div>
+          <div class="table-wrap">
+            <table class="data">
+              <thead>
+                <tr>
+                  <th>When</th>
+                  <th>Branch</th>
+                  <th>Teacher</th>
+                  <th>Cleanliness</th>
+                  <th>Facilities</th>
+                  <th>Staff</th>
+                  <th>Transport</th>
+                  <th>Flag</th>
+                </tr>
+              </thead>
+              <tbody id="qualityRows"><tr><td colspan="8">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel" id="teachers">
+          <div class="panel-header"><h3>Teacher approvals</h3></div>
+          <div class="table-wrap">
+            <table class="data">
+              <thead>
+                <tr><th>Name</th><th>College</th><th>Phone</th><th>Email</th><th>Status</th><th>Action</th></tr>
+              </thead>
+              <tbody id="teacherRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+    const user = Medico.requireAuth(['admin', 'super_admin']);
+    if (!user) throw new Error('auth');
+    Medico.bindShell();
+    document.getElementById('userName').textContent = user.email;
+
+    async function loadDashboard() {
+      const { ok, data } = await Medico.api('/admin/dashboard');
+      if (!ok) return;
+      const m = data.data.metrics || {};
+      document.getElementById('mTeachers').textContent = m.active_teachers ?? 0;
+      document.getElementById('mBranches').textContent = m.active_branches ?? 0;
+      document.getElementById('mToday').textContent = m.classes_today ?? 0;
+      document.getElementById('mIssues').textContent = m.open_issues_7d ?? 0;
+    }
+
+    async function loadGeofence() {
+      const { ok, data } = await Medico.api('/admin/geofence');
+      if (!ok) return;
+      document.getElementById('globalRadius').value = data.data.global_checkin_radius_m;
+      document.getElementById('geoRows').innerHTML = (data.data.branches || []).map((b) => `
+        <tr>
+          <td>${b.name}<div style="font-size:.75rem;color:var(--slate-500)">${b.code}</div></td>
+          <td>${b.city}${b.is_outside_dhaka == 1 ? ' · Outside Dhaka' : ''}</td>
+          <td style="font-size:.8rem">${b.latitude ? `${b.latitude}, ${b.longitude}` : '—'}</td>
+          <td><input data-branch="${b.id}" type="number" min="20" max="5000" placeholder="Global" value="${b.geofence_radius_m ?? ''}" style="max-width:110px" /></td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('saveGeo').addEventListener('click', async () => {
+      const branches = [...document.querySelectorAll('[data-branch]')].map((el) => ({
+        id: el.dataset.branch,
+        geofence_radius_m: el.value === '' ? null : Number(el.value),
+      }));
+      const { ok, data } = await Medico.api('/admin/geofence', {
+        method: 'PUT',
+        body: {
+          global_checkin_radius_m: Number(document.getElementById('globalRadius').value),
+          branches,
+        },
+      });
+      Medico.showAlert(document.getElementById('geoAlert'), data.message, ok ? 'success' : 'error');
+    });
+
+    function facilitySummary(r) {
+      const items = [r.facility_fan, r.facility_ac, r.facility_sound_system, r.facility_projector];
+      const bad = items.filter((x) => x !== 'working').length;
+      return bad ? `${bad} issue(s)` : 'OK';
+    }
+
+    async function loadQuality() {
+      const flagged = document.getElementById('flaggedOnly').checked;
+      const { ok, data } = await Medico.api(`/admin/quality-reports?flagged_only=${flagged ? 1 : 0}`);
+      if (!ok) return;
+      const rows = data.data || [];
+      const tbody = document.getElementById('qualityRows');
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><strong>No flagged reviews</strong>Infrastructure and staff issues will appear here.</div></td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.map((r) => `
+        <tr>
+          <td>${new Date(r.submitted_at).toLocaleString()}</td>
+          <td>${r.branch_name}</td>
+          <td>${r.teacher_name}</td>
+          <td>${r.cleanliness_classroom}</td>
+          <td>${facilitySummary(r)}</td>
+          <td>${r.staff_behavior}</td>
+          <td>${r.transport_applicable == 1 ? (r.transport_rating || '—') : 'N/A'}</td>
+          <td>${r.has_issue_flag == 1 ? '<span class="badge badge-issue">Flagged</span>' : '<span class="badge badge-ok">OK</span>'}</td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('flaggedOnly').addEventListener('change', loadQuality);
+
+    async function loadTeachers() {
+      const { ok, data } = await Medico.api('/admin/teachers');
+      if (!ok) return;
+      document.getElementById('teacherRows').innerHTML = (data.data || []).map((t) => `
+        <tr>
+          <td>${t.full_name}</td>
+          <td>${t.medical_college}</td>
+          <td>${t.phone}</td>
+          <td>${t.email}</td>
+          <td>${Medico.badge(t.user_status)}</td>
+          <td>
+            ${t.user_status !== 'active'
+              ? `<button class="btn btn-secondary btn-sm" data-activate="${t.user_id}">Activate</button>`
+              : `<button class="btn btn-ghost btn-sm" data-suspend="${t.user_id}">Suspend</button>`}
+          </td>
+        </tr>
+      `).join('');
+
+      document.querySelectorAll('[data-activate]').forEach((b) => b.addEventListener('click', () => setStatus(b.dataset.activate, 'active')));
+      document.querySelectorAll('[data-suspend]').forEach((b) => b.addEventListener('click', () => setStatus(b.dataset.suspend, 'suspended')));
+    }
+
+    async function setStatus(id, status) {
+      await Medico.api(`/admin/users/${id}/status`, { method: 'PATCH', body: { status } });
+      loadTeachers();
+      loadDashboard();
+    }
+
+    loadDashboard();
+    loadGeofence();
+    loadQuality();
+    loadTeachers();
+  </script>
+</body>
+</html>
