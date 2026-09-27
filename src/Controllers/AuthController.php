@@ -11,10 +11,16 @@ use PDO;
 
 final class AuthController
 {
-    public function __construct(
-        private PDO $db,
-        private array $config
-    ) {}
+    /** @var PDO */
+    private $db;
+    /** @var array */
+    private $config;
+
+    public function __construct(PDO $db, array $config)
+    {
+        $this->db = $db;
+        $this->config = $config;
+    }
 
     public function register(Request $request): void
     {

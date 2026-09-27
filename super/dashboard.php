@@ -266,12 +266,19 @@ $navLinks = [
 $mobileNavLinks = $navLinks;
 require __DIR__ . '/../includes/app_header.php';
 
-$roleLabel = static fn (string $r): string => match ($r) {
-    'super_admin' => 'Super Admin',
-    'branch_manager' => 'Manager',
-    'admin' => 'Admin',
-    'teacher' => 'Teacher',
-    default => $r,
+$roleLabel = static function (string $r): string {
+    switch ($r) {
+        case 'super_admin':
+            return 'Super Admin';
+        case 'branch_manager':
+            return 'Manager';
+        case 'admin':
+            return 'Admin';
+        case 'teacher':
+            return 'Teacher';
+        default:
+            return $r;
+    }
 };
 ?>
         <div class="dg-teach-top">

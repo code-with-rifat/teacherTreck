@@ -90,11 +90,17 @@ $total = (int) $countSt->fetchColumn();
 $p = paginate_request(40);
 $meta = paginate_meta($total, $p);
 
-$order = match ($view) {
-    'module' => 'c.subject ASC, c.course_category ASC, c.time_slot ASC, b.name ASC',
-    'branch' => 'b.name ASC, c.time_slot ASC, t.full_name ASC',
-    default => 'c.time_slot ASC, b.name ASC, t.full_name ASC',
-};
+switch ($view) {
+    case 'module':
+        $order = 'c.subject ASC, c.course_category ASC, c.time_slot ASC, b.name ASC';
+        break;
+    case 'branch':
+        $order = 'b.name ASC, c.time_slot ASC, t.full_name ASC';
+        break;
+    default:
+        $order = 'c.time_slot ASC, b.name ASC, t.full_name ASC';
+        break;
+}
 
 $rows = $pdo->prepare(
     'SELECT c.id, c.time_slot, c.status, c.course_category, c.subject, c.lecture_no, c.branch_id,

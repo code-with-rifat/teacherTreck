@@ -10,7 +10,16 @@ use PDO;
 
 final class BranchManagerController
 {
-    public function __construct(private PDO $db, private array $config) {}
+    /** @var PDO */
+    private $db;
+    /** @var array */
+    private $config;
+
+    public function __construct(PDO $db, array $config)
+    {
+        $this->db = $db;
+        $this->config = $config;
+    }
 
     public function dashboard(array $authUser): void
     {
@@ -226,13 +235,23 @@ final class BranchManagerController
             Response::error('File too large', 422);
         }
 
-        $ext = match ($mime) {
-            'image/jpeg' => 'jpg',
-            'image/png' => 'png',
-            'image/webp' => 'webp',
-            'application/pdf' => 'pdf',
-            default => 'bin',
-        };
+        switch ($mime) {
+            case 'image/jpeg':
+                $ext = 'jpg';
+                break;
+            case 'image/png':
+                $ext = 'png';
+                break;
+            case 'image/webp':
+                $ext = 'webp';
+                break;
+            case 'application/pdf':
+                $ext = 'pdf';
+                break;
+            default:
+                $ext = 'bin';
+                break;
+        }
 
         $name = 'sig_class_' . $classId . '_' . time() . '.' . $ext;
         $dest = $dir . DIRECTORY_SEPARATOR . $name;

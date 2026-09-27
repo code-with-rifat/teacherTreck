@@ -5,6 +5,35 @@
 
 declare(strict_types=1);
 
+/* PHP 7.4 polyfills (cPanel shared hosting) */
+if (!function_exists('str_starts_with')) {
+    function str_starts_with($haystack, $needle)
+    {
+        $haystack = (string) $haystack;
+        $needle = (string) $needle;
+        return $needle === '' || strncmp($haystack, $needle, strlen($needle)) === 0;
+    }
+}
+if (!function_exists('str_contains')) {
+    function str_contains($haystack, $needle)
+    {
+        $haystack = (string) $haystack;
+        $needle = (string) $needle;
+        return $needle === '' || strpos($haystack, $needle) !== false;
+    }
+}
+if (!function_exists('str_ends_with')) {
+    function str_ends_with($haystack, $needle)
+    {
+        $haystack = (string) $haystack;
+        $needle = (string) $needle;
+        if ($needle === '') {
+            return true;
+        }
+        return substr($haystack, -strlen($needle)) === $needle;
+    }
+}
+
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
@@ -154,13 +183,18 @@ function require_login(?array $roles = null): array
 
 function role_home(string $role): string
 {
-    return match ($role) {
-        'teacher' => url('teacher/dashboard.php'),
-        'branch_manager' => url('manager/dashboard.php'),
-        'admin' => url('admin/dashboard.php'),
-        'super_admin' => url('super/dashboard.php'),
-        default => url('login.php'),
-    };
+    switch ($role) {
+        case 'teacher':
+            return url('teacher/dashboard.php');
+        case 'branch_manager':
+            return url('manager/dashboard.php');
+        case 'admin':
+            return url('admin/dashboard.php');
+        case 'super_admin':
+            return url('super/dashboard.php');
+        default:
+            return url('login.php');
+    }
 }
 
 function login_user(array $user): void

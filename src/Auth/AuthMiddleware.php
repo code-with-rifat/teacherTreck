@@ -10,10 +10,16 @@ use PDO;
 
 final class AuthMiddleware
 {
-    public function __construct(
-        private PDO $db,
-        private array $jwtConfig
-    ) {}
+    /** @var PDO */
+    private $db;
+    /** @var array */
+    private $jwtConfig;
+
+    public function __construct(PDO $db, array $jwtConfig)
+    {
+        $this->db = $db;
+        $this->jwtConfig = $jwtConfig;
+    }
 
     /**
      * @param list<string>|null $roles Allowed roles; null = any authenticated

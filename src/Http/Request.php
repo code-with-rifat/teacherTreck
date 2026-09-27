@@ -44,7 +44,7 @@ final class Request
     {
         $headers = [];
         foreach ($_SERVER as $key => $value) {
-            if (str_starts_with($key, 'HTTP_')) {
+            if (strpos($key, 'HTTP_') === 0) {
                 $name = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($key, 5)))));
                 $headers[$name] = (string) $value;
             }
@@ -59,7 +59,7 @@ final class Request
     private function parseBody(): array
     {
         $contentType = $this->headers['Content-Type'] ?? '';
-        if (str_contains($contentType, 'application/json')) {
+        if (strpos($contentType, 'application/json') !== false) {
             $raw = file_get_contents('php://input') ?: '';
             $decoded = json_decode($raw, true);
             return is_array($decoded) ? $decoded : [];
@@ -79,7 +79,8 @@ final class Request
         return null;
     }
 
-    public function input(string $key, mixed $default = null): mixed
+    /** @param mixed $default @return mixed */
+    public function input(string $key, $default = null)
     {
         return $this->body[$key] ?? $this->query[$key] ?? $default;
     }

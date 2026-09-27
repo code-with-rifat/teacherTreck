@@ -10,7 +10,13 @@ use PDO;
 
 final class SuperAdminController
 {
-    public function __construct(private PDO $db) {}
+    /** @var PDO */
+    private $db;
+
+    public function __construct(PDO $db)
+    {
+        $this->db = $db;
+    }
 
     public function createUser(Request $request): void
     {

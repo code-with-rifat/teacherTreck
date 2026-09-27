@@ -5,18 +5,17 @@
  */
 header('Content-Type: text/plain; charset=utf-8');
 echo "PHP OK " . PHP_VERSION . "\n";
-echo "Need: PHP 8.0+\n";
 echo "File: " . __FILE__ . "\n";
 echo "Dir:  " . __DIR__ . "\n";
 echo "index.php: " . (is_file(__DIR__ . '/index.php') ? 'YES' : 'NO') . "\n";
 echo "login.php: " . (is_file(__DIR__ . '/login.php') ? 'YES' : 'NO') . "\n";
 echo "config:    " . (is_file(__DIR__ . '/config/app.php') ? 'YES' : 'NO') . "\n";
 
-if (version_compare(PHP_VERSION, '8.0.0', '<')) {
-    echo "\nERROR: Server PHP is " . PHP_VERSION . "\n";
-    echo "cPanel → MultiPHP Manager → classes.web.medico.com.bd → PHP 8.1 or 8.2\n";
+if (version_compare(PHP_VERSION, '7.4.0', '<')) {
+    echo "\nERROR: Need PHP 7.4+\n";
     exit;
 }
+echo "PHP version: compatible with 7.4+\n";
 
 try {
     $cfg = require __DIR__ . '/config/app.php';
