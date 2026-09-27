@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Admin — MEDICO</title>
-  <link rel="stylesheet" href="../assets/css/app.css" />
+  <link rel="stylesheet" href="../teacher-traking/assets/css/app.css" />
 </head>
 <body>
   <div id="overlay" class="overlay"></div>
@@ -120,7 +120,7 @@
     </div>
   </div>
 
-  <script src="../assets/js/app.js"></script>
+  <script src="../teacher-traking/assets/js/app.js"></script>
   <script>
     const user = Medico.requireAuth(['admin', 'super_admin']);
     if (!user) throw new Error('auth');
@@ -128,7 +128,7 @@
     document.getElementById('userName').textContent = user.email;
 
     async function loadDashboard() {
-      const { ok, data } = await Medico.api('/admin/dashboard');
+      const { ok, data } = await Medico.api('/teacher-traking/admin/dashboard');
       if (!ok) return;
       const m = data.data.metrics || {};
       document.getElementById('mTeachers').textContent = m.active_teachers ?? 0;
@@ -138,7 +138,7 @@
     }
 
     async function loadGeofence() {
-      const { ok, data } = await Medico.api('/admin/geofence');
+      const { ok, data } = await Medico.api('/teacher-traking/admin/geofence');
       if (!ok) return;
       document.getElementById('globalRadius').value = data.data.global_checkin_radius_m;
       document.getElementById('geoRows').innerHTML = (data.data.branches || []).map((b) => `
@@ -156,7 +156,7 @@
         id: el.dataset.branch,
         geofence_radius_m: el.value === '' ? null : Number(el.value),
       }));
-      const { ok, data } = await Medico.api('/admin/geofence', {
+      const { ok, data } = await Medico.api('/teacher-traking/admin/geofence', {
         method: 'PUT',
         body: {
           global_checkin_radius_m: Number(document.getElementById('globalRadius').value),
@@ -174,7 +174,7 @@
 
     async function loadQuality() {
       const flagged = document.getElementById('flaggedOnly').checked;
-      const { ok, data } = await Medico.api(`/admin/quality-reports?flagged_only=${flagged ? 1 : 0}`);
+      const { ok, data } = await Medico.api(`/teacher-traking/admin/quality-reports?flagged_only=${flagged ? 1 : 0}`);
       if (!ok) return;
       const rows = data.data || [];
       const tbody = document.getElementById('qualityRows');
@@ -199,7 +199,7 @@
     document.getElementById('flaggedOnly').addEventListener('change', loadQuality);
 
     async function loadTeachers() {
-      const { ok, data } = await Medico.api('/admin/teachers');
+      const { ok, data } = await Medico.api('/teacher-traking/admin/teachers');
       if (!ok) return;
       document.getElementById('teacherRows').innerHTML = (data.data || []).map((t) => `
         <tr>
@@ -221,7 +221,7 @@
     }
 
     async function setStatus(id, status) {
-      await Medico.api(`/admin/users/${id}/status`, { method: 'PATCH', body: { status } });
+      await Medico.api(`/teacher-traking/admin/users/${id}/status`, { method: 'PATCH', body: { status } });
       loadTeachers();
       loadDashboard();
     }

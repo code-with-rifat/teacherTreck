@@ -5,4 +5,4 @@ $user = current_user();
 if ($user) {
     redirect(role_home($user['role']));
 }
-redirect('/login.php');
+redirect('login.php');

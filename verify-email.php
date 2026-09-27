@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             flash('success', 'If that email is registered, a new code was sent.');
         } elseif (!empty($row['email_verified_at'])) {
             flash('success', 'Email already verified. You can sign in (after admin activation).');
-            redirect('/login.php');
+            redirect('/teacher-traking/login.php');
         } else {
             $sent = issue_email_code((int) $row['id'], (string) $row['email'], 'verify');
             if (!$sent['ok']) {
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 db()->prepare('UPDATE users SET email_verified_at = NOW() WHERE id = ?')
                     ->execute([(int) $match['id']]);
                 flash('success', 'Email verified. Wait for admin activation, then sign in.');
-                redirect('/login.php');
+                redirect('/teacher-traking/login.php');
             }
         }
     }
@@ -113,5 +113,5 @@ require __DIR__ . '/includes/auth_header.php';
           </button>
         </form>
         <p class="auth-footer"><a href="login.php">Back to sign in</a></p>
-        <script src="/assets/js/otp.js" defer></script>
+        <script src="/teacher-traking/assets/js/otp.js" defer></script>
 <?php require __DIR__ . '/includes/auth_footer.php'; ?>

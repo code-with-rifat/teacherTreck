@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         flash('success', 'Teacher status updated.');
     }
-    $redir = '/admin/teachers.php';
+    $redir = '/teacher-traking/admin/teachers.php';
     if (!empty($_POST['date']) && preg_match('/^\d{4}-\d{2}-\d{2}$/', (string) $_POST['date'])) {
         $redir .= '?date=' . urlencode((string) $_POST['date']);
     }

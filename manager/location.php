@@ -60,8 +60,8 @@ require __DIR__ . '/../includes/app_header.php';
             <?php endif; ?>
 
             <div class="roster-actions" style="margin-top:1rem">
-              <a class="btn btn-secondary btn-sm" href="/manager/account.php" style="width:auto">Account</a>
-              <a class="btn btn-primary btn-sm" href="/manager/dashboard.php" style="width:auto">Dashboard</a>
+              <a class="btn btn-secondary btn-sm" href="/teacher-traking/manager/account.php" style="width:auto">Account</a>
+              <a class="btn btn-primary btn-sm" href="/teacher-traking/manager/dashboard.php" style="width:auto">Dashboard</a>
             </div>
           </div>
         </section>

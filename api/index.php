@@ -73,105 +73,105 @@ if ($method === 'GET' && $path === '/auth/me') {
 }
 
 // Teacher
-if ($method === 'GET' && $path === '/teacher/dashboard') {
+if ($method === 'GET' && $path === '/teacher-traking/teacher/dashboard') {
     $user = $authMw->requireUser($request, ['teacher']);
     $teacherCtrl->dashboard($user);
 }
-if ($method === 'GET' && $path === '/teacher/classes') {
+if ($method === 'GET' && $path === '/teacher-traking/teacher/classes') {
     $user = $authMw->requireUser($request, ['teacher']);
     $teacherCtrl->myClasses($user, $request);
 }
-if ($method === 'POST' && preg_match('#^/teacher/classes/(\d+)/check-in$#', $path, $m)) {
+if ($method === 'POST' && preg_match('#^/teacher-traking/teacher/classes/(\d+)/check-in$#', $path, $m)) {
     $user = $authMw->requireUser($request, ['teacher']);
     $teacherCtrl->checkIn($user, $request, (int) $m[1]);
 }
-if ($method === 'POST' && preg_match('#^/teacher/classes/(\d+)/check-out$#', $path, $m)) {
+if ($method === 'POST' && preg_match('#^/teacher-traking/teacher/classes/(\d+)/check-out$#', $path, $m)) {
     $user = $authMw->requireUser($request, ['teacher']);
     $teacherCtrl->checkOut($user, $request, (int) $m[1]);
 }
-if ($method === 'POST' && preg_match('#^/teacher/classes/(\d+)/review$#', $path, $m)) {
+if ($method === 'POST' && preg_match('#^/teacher-traking/teacher/classes/(\d+)/review$#', $path, $m)) {
     $user = $authMw->requireUser($request, ['teacher']);
     $teacherCtrl->submitReview($user, $request, (int) $m[1]);
 }
 
 // Branch Manager
-if ($method === 'GET' && $path === '/manager/dashboard') {
+if ($method === 'GET' && $path === '/teacher-traking/manager/dashboard') {
     $user = $authMw->requireUser($request, ['branch_manager']);
     $managerCtrl->dashboard($user);
 }
-if ($method === 'POST' && $path === '/manager/branch/location') {
+if ($method === 'POST' && $path === '/teacher-traking/manager/branch/location') {
     $user = $authMw->requireUser($request, ['branch_manager']);
     $managerCtrl->setupLocation($user, $request);
 }
-if ($method === 'GET' && $path === '/manager/teachers') {
+if ($method === 'GET' && $path === '/teacher-traking/manager/teachers') {
     $user = $authMw->requireUser($request, ['branch_manager']);
     $managerCtrl->listTeachers($user);
 }
-if ($method === 'GET' && $path === '/manager/classes') {
+if ($method === 'GET' && $path === '/teacher-traking/manager/classes') {
     $user = $authMw->requireUser($request, ['branch_manager']);
     $managerCtrl->listClasses($user, $request);
 }
-if ($method === 'POST' && $path === '/manager/classes') {
+if ($method === 'POST' && $path === '/teacher-traking/manager/classes') {
     $user = $authMw->requireUser($request, ['branch_manager']);
     $managerCtrl->createClass($user, $request);
 }
-if ($method === 'POST' && preg_match('#^/manager/classes/(\d+)/reminder$#', $path, $m)) {
+if ($method === 'POST' && preg_match('#^/teacher-traking/manager/classes/(\d+)/reminder$#', $path, $m)) {
     $user = $authMw->requireUser($request, ['branch_manager']);
     $managerCtrl->markReminder($user, (int) $m[1]);
 }
-if ($method === 'POST' && preg_match('#^/manager/classes/(\d+)/verify$#', $path, $m)) {
+if ($method === 'POST' && preg_match('#^/teacher-traking/manager/classes/(\d+)/verify$#', $path, $m)) {
     $user = $authMw->requireUser($request, ['branch_manager']);
     $managerCtrl->verifyAttendance($user, $request, (int) $m[1]);
 }
 
 // Admin
-if ($method === 'GET' && $path === '/admin/dashboard') {
+if ($method === 'GET' && $path === '/teacher-traking/admin/dashboard') {
     $user = $authMw->requireUser($request, ['admin', 'super_admin']);
     $adminCtrl->dashboard($user);
 }
-if ($method === 'GET' && $path === '/admin/geofence') {
+if ($method === 'GET' && $path === '/teacher-traking/admin/geofence') {
     $user = $authMw->requireUser($request, ['admin', 'super_admin']);
     $adminCtrl->getGeofenceSettings();
 }
-if ($method === 'PUT' && $path === '/admin/geofence') {
+if ($method === 'PUT' && $path === '/teacher-traking/admin/geofence') {
     $user = $authMw->requireUser($request, ['admin', 'super_admin']);
     $adminCtrl->updateGeofence($request);
 }
-if ($method === 'GET' && $path === '/admin/quality-reports') {
+if ($method === 'GET' && $path === '/teacher-traking/admin/quality-reports') {
     $user = $authMw->requireUser($request, ['admin', 'super_admin']);
     $adminCtrl->qualityReports($request);
 }
-if ($method === 'GET' && $path === '/admin/teachers') {
+if ($method === 'GET' && $path === '/teacher-traking/admin/teachers') {
     $user = $authMw->requireUser($request, ['admin', 'super_admin']);
     $adminCtrl->listTeachers($request);
 }
-if ($method === 'PATCH' && preg_match('#^/admin/users/(\d+)/status$#', $path, $m)) {
+if ($method === 'PATCH' && preg_match('#^/teacher-traking/admin/users/(\d+)/status$#', $path, $m)) {
     $user = $authMw->requireUser($request, ['admin', 'super_admin']);
     $adminCtrl->setUserStatus($request, (int) $m[1]);
 }
-if ($method === 'GET' && $path === '/admin/branches') {
+if ($method === 'GET' && $path === '/teacher-traking/admin/branches') {
     $user = $authMw->requireUser($request, ['admin', 'super_admin']);
     $adminCtrl->listBranches();
 }
-if ($method === 'POST' && $path === '/admin/branches') {
+if ($method === 'POST' && $path === '/teacher-traking/admin/branches') {
     $user = $authMw->requireUser($request, ['admin', 'super_admin']);
     $adminCtrl->createBranch($request);
 }
 
 // Super Admin
-if ($method === 'POST' && $path === '/super/users') {
+if ($method === 'POST' && $path === '/teacher-traking/super/users') {
     $user = $authMw->requireUser($request, ['super_admin']);
     $superCtrl->createUser($request);
 }
-if ($method === 'POST' && $path === '/super/assign-manager') {
+if ($method === 'POST' && $path === '/teacher-traking/super/assign-manager') {
     $user = $authMw->requireUser($request, ['super_admin']);
     $superCtrl->assignManager($request);
 }
-if (($method === 'GET' || $method === 'POST') && $path === '/super/settings') {
+if (($method === 'GET' || $method === 'POST') && $path === '/teacher-traking/super/settings') {
     $user = $authMw->requireUser($request, ['super_admin']);
     $superCtrl->systemSettings($request);
 }
-if ($method === 'GET' && $path === '/super/audit-logs') {
+if ($method === 'GET' && $path === '/teacher-traking/super/audit-logs') {
     $user = $authMw->requireUser($request, ['super_admin']);
     $superCtrl->auditLogs($request);
 }

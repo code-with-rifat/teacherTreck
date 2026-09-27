@@ -66,7 +66,7 @@ extract($nav);
 $pageTitle = 'Teachers';
 $pageSub = $branch['name'];
 $displayName = $branch['name'];
-$topActions = '<a class="btn btn-primary btn-sm" href="/manager/classes.php?new=1&date=' . h($day) . '" style="width:auto">Assign class</a>';
+$topActions = '<a class="btn btn-primary btn-sm" href="/teacher-traking/manager/classes.php?new=1&date=' . h($day) . '" style="width:auto">Assign class</a>';
 require __DIR__ . '/../includes/app_header.php';
 ?>
         <section class="panel panel-tight">
@@ -144,7 +144,7 @@ require __DIR__ . '/../includes/app_header.php';
                   <div class="roster-detail">
                     <div class="roster-detail-grid">
                       <?php foreach ($t['slots'] as $s): ?>
-                        <a class="roster-detail-item" href="/manager/class.php?id=<?= (int) $s['class_id'] ?>">
+                        <a class="roster-detail-item" href="/teacher-traking/manager/class.php?id=<?= (int) $s['class_id'] ?>">
                           <strong><?= h(format_time($s['time_slot'])) ?></strong>
                           <span>
                             <?php if (!empty($s['subject'])): ?><?= h($s['subject']) ?> · <?php endif; ?>
@@ -156,8 +156,8 @@ require __DIR__ . '/../includes/app_header.php';
                       <?php endforeach; ?>
                     </div>
                     <div class="roster-actions">
-                      <a class="btn btn-secondary btn-sm" href="/manager/teacher.php?id=<?= (int) $t['id'] ?>">Profile</a>
-                      <a class="btn btn-primary btn-sm" href="/manager/classes.php?new=1&teacher_id=<?= (int) $t['id'] ?>&date=<?= h($day) ?>">Assign</a>
+                      <a class="btn btn-secondary btn-sm" href="/teacher-traking/manager/teacher.php?id=<?= (int) $t['id'] ?>">Profile</a>
+                      <a class="btn btn-primary btn-sm" href="/teacher-traking/manager/classes.php?new=1&teacher_id=<?= (int) $t['id'] ?>&date=<?= h($day) ?>">Assign</a>
                     </div>
                   </div>
                 </details>

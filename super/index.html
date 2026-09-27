@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Super Admin — MEDICO</title>
-  <link rel="stylesheet" href="../assets/css/app.css" />
+  <link rel="stylesheet" href="../teacher-traking/assets/css/app.css" />
 </head>
 <body>
   <div id="overlay" class="overlay"></div>
@@ -21,7 +21,7 @@
         <a class="nav-link active" href="#users"><span class="icon">◎</span> Role management</a>
         <a class="nav-link" href="#branches"><span class="icon">▦</span> Branches</a>
         <a class="nav-link" href="#settings"><span class="icon">⚙</span> System settings</a>
-        <a class="nav-link" href="../admin/index.html"><span class="icon">▣</span> Admin console</a>
+        <a class="nav-link" href="../teacher-traking/admin/index.html"><span class="icon">▣</span> Admin console</a>
       </nav>
       <div class="sidebar-foot">
         <div class="user-chip">
@@ -92,14 +92,14 @@
     </div>
   </div>
 
-  <script src="../assets/js/app.js"></script>
+  <script src="../teacher-traking/assets/js/app.js"></script>
   <script>
     const user = Medico.requireAuth(['super_admin']);
     if (!user) throw new Error('auth');
     Medico.bindShell();
 
     document.getElementById('createUser').addEventListener('click', async () => {
-      const { ok, data } = await Medico.api('/super/users', {
+      const { ok, data } = await Medico.api('/teacher-traking/super/users', {
         method: 'POST',
         body: {
           email: document.getElementById('newEmail').value.trim(),
@@ -111,7 +111,7 @@
     });
 
     document.getElementById('assignMgr').addEventListener('click', async () => {
-      const { ok, data } = await Medico.api('/super/assign-manager', {
+      const { ok, data } = await Medico.api('/teacher-traking/super/assign-manager', {
         method: 'POST',
         body: {
           branch_id: document.getElementById('branchId').value,
@@ -123,7 +123,7 @@
     });
 
     async function loadBranches() {
-      const { ok, data } = await Medico.api('/admin/branches');
+      const { ok, data } = await Medico.api('/teacher-traking/admin/branches');
       if (!ok) return;
       document.getElementById('branchList').innerHTML = (data.data || []).map((b) =>
         `<div style="padding:.4rem 0;border-bottom:1px solid var(--border)"><strong>#${b.id}</strong> ${b.name} (${b.code}) · Manager: ${b.manager_email || 'unassigned'}</div>`
@@ -131,7 +131,7 @@
     }
 
     async function loadSettings() {
-      const { ok, data } = await Medico.api('/super/settings');
+      const { ok, data } = await Medico.api('/teacher-traking/super/settings');
       if (!ok) return;
       document.getElementById('settingsList').innerHTML = (data.data || []).map((s) =>
         `<div style="display:flex;justify-content:space-between;gap:1rem;padding:.65rem 0;border-bottom:1px solid var(--border)">

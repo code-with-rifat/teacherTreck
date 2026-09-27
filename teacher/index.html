@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Teacher Dashboard — MEDICO</title>
-  <link rel="stylesheet" href="../assets/css/app.css" />
+  <link rel="stylesheet" href="../teacher-traking/assets/css/app.css" />
 </head>
 <body>
   <div id="overlay" class="overlay"></div>
@@ -156,7 +156,7 @@
     </div>
   </div>
 
-  <script src="../assets/js/app.js"></script>
+  <script src="../teacher-traking/assets/js/app.js"></script>
   <script>
     const user = Medico.requireAuth(['teacher']);
     if (!user) throw new Error('auth');
@@ -178,7 +178,7 @@
       </div></td></tr>`;
 
       try {
-        const { ok, data } = await Medico.api('/teacher/dashboard');
+        const { ok, data } = await Medico.api('/teacher-traking/teacher/dashboard');
         if (!ok) {
           tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><strong>Could not load</strong>${data.message || 'Try again'}</div></td></tr>`;
           return;
@@ -255,7 +255,7 @@
         Medico.showAlert(alert, 'GPS required for check-in');
         return;
       }
-      const { ok, data } = await Medico.api(`/teacher/classes/${activeClass.id}/check-in`, {
+      const { ok, data } = await Medico.api(`/teacher-traking/teacher/classes/${activeClass.id}/check-in`, {
         method: 'POST',
         body: lastCoords,
       });
@@ -274,7 +274,7 @@
 
     document.getElementById('checkOutBtn').addEventListener('click', async () => {
       const alert = document.getElementById('modalAlert');
-      const { ok, data } = await Medico.api(`/teacher/classes/${activeClass.id}/check-out`, {
+      const { ok, data } = await Medico.api(`/teacher-traking/teacher/classes/${activeClass.id}/check-out`, {
         method: 'POST',
         body: {
           student_count_teacher: document.getElementById('student_count').value || null,
@@ -313,7 +313,7 @@
         body.transport_rating = document.getElementById('transport_rating').value;
         body.transport_comments = document.getElementById('transport_comments').value;
       }
-      const { ok, data } = await Medico.api(`/teacher/classes/${activeClass.id}/review`, {
+      const { ok, data } = await Medico.api(`/teacher-traking/teacher/classes/${activeClass.id}/review`, {
         method: 'POST',
         body,
       });

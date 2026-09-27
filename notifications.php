@@ -12,7 +12,7 @@ $uid = (int) $user['id'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'mark_all') {
     $pdo->prepare('UPDATE notifications SET is_read = 1 WHERE user_id = ?')->execute([$uid]);
     flash('success', 'All notifications marked as read.');
-    redirect('/notifications.php');
+    redirect('/teacher-traking/notifications.php');
 }
 
 $p = paginate_request(25);
@@ -57,7 +57,7 @@ if ($role === 'branch_manager') {
         $navRole = 'Super Admin';
         $navLinks[] = [
             'id' => 'super',
-            'href' => '/super/dashboard.php',
+            'href' => '/teacher-traking/super/dashboard.php',
             'icon' => '⚙',
             'label' => 'System',
         ];

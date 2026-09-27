@@ -91,7 +91,7 @@ require __DIR__ . '/../includes/app_header.php';
             </p>
 
             <div class="roster-actions">
-              <a class="btn btn-primary btn-sm" href="/manager/dashboard.php" style="width:auto">Dashboard</a>
+              <a class="btn btn-primary btn-sm" href="/teacher-traking/manager/dashboard.php" style="width:auto">Dashboard</a>
             </div>
           </div>
         </section>

@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         flash('success', 'Teacher status updated.');
     }
 
-    $redir = '/admin/dashboard.php';
+    $redir = '/teacher-traking/admin/dashboard.php';
     if (!empty($_POST['date']) && preg_match('/^\d{4}-\d{2}-\d{2}$/', (string) $_POST['date'])) {
         $redir .= '?date=' . urlencode((string) $_POST['date']);
     }
@@ -285,19 +285,19 @@ require __DIR__ . '/../includes/app_header.php';
           <section class="dg-card">
             <div class="dg-card-head"><h3>Modules</h3></div>
             <div class="dg-resource-list">
-              <a class="dg-resource-item" href="/admin/classes.php?date=<?= h($day) ?>">
+              <a class="dg-resource-item" href="/teacher-traking/admin/classes.php?date=<?= h($day) ?>">
                 <span class="dg-file-ico">CL</span>
                 <div><strong>Classes</strong><span><?= (int) $dayTotal ?> slots · by subject</span></div>
               </a>
-              <a class="dg-resource-item" href="/admin/teachers.php?date=<?= h($day) ?>">
+              <a class="dg-resource-item" href="/teacher-traking/admin/teachers.php?date=<?= h($day) ?>">
                 <span class="dg-file-ico">TR</span>
                 <div><strong>Teachers</strong><span><?= (int) $rosterTeacherCount ?> on roster today</span></div>
               </a>
-              <a class="dg-resource-item" href="/admin/reviews.php">
+              <a class="dg-resource-item" href="/teacher-traking/admin/reviews.php">
                 <span class="dg-file-ico">RV</span>
                 <div><strong>Reviews</strong><span>Teacher vs manager</span></div>
               </a>
-              <a class="dg-resource-item" href="/admin/branches.php">
+              <a class="dg-resource-item" href="/teacher-traking/admin/branches.php">
                 <span class="dg-file-ico">BR</span>
                 <div><strong>Branches</strong><span>Map · managers · + add</span></div>
               </a>
@@ -335,7 +335,7 @@ require __DIR__ . '/../includes/app_header.php';
               <ul class="dg-todo">
                 <?php foreach (array_slice($todos, 0, 6) as $item): $c = $item['c']; ?>
                   <li>
-                    <a href="/admin/review.php?class_id=<?= (int) $c['id'] ?>">
+                    <a href="/teacher-traking/admin/review.php?class_id=<?= (int) $c['id'] ?>">
                       <i class="dg-check"></i>
                       <div>
                         <strong><?= h($c['teacher_name']) ?></strong>
@@ -363,7 +363,7 @@ require __DIR__ . '/../includes/app_header.php';
           <section class="dg-card dg-span-2">
             <div class="dg-card-head">
               <h3>Upcoming · open slots</h3>
-              <a class="dg-link" href="/admin/classes.php?date=<?= h($day) ?>">Classes module →</a>
+              <a class="dg-link" href="/teacher-traking/admin/classes.php?date=<?= h($day) ?>">Classes module →</a>
             </div>
             <?php
             $openPreview = [];
@@ -382,7 +382,7 @@ require __DIR__ . '/../includes/app_header.php';
             <?php else: ?>
               <div class="dg-upcoming">
                 <?php foreach ($openPreview as $c): ?>
-                  <a class="dg-up-item" href="/admin/review.php?class_id=<?= (int) $c['id'] ?>">
+                  <a class="dg-up-item" href="/teacher-traking/admin/review.php?class_id=<?= (int) $c['id'] ?>">
                     <span><?= h(($c['subject'] ?: 'Class') . ' · ' . $c['teacher_name']) ?></span>
                     <time><?= h(format_time($c['time_slot'])) ?></time>
                   </a>

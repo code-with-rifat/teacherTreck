@@ -64,7 +64,7 @@ function mail_encode_address(string $name, string $email): string
 
 function mail_log_fallback(string $to, string $subject, string $text, string $reason): array
 {
-    $dir = __DIR__ . '/../storage/logs';
+    $dir = __DIR__ . '/../teacher-traking/storage/logs';
     if (!is_dir($dir)) {
         @mkdir($dir, 0775, true);
     }

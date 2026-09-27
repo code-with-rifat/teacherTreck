@@ -12,18 +12,44 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 $config = require __DIR__ . '/../config/app.php';
 date_default_timezone_set($config['timezone'] ?? 'Asia/Dhaka');
 
+if (!empty($config['debug'])) {
+    error_reporting(E_ALL);
+    ini_set('display_errors', '1');
+}
+
 function h(?string $s): string
 {
     return htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8');
 }
 
+/** App URL with base_url prefix (e.g. /teacher-traking/login.php). */
+function url(string $path = ''): string
+{
+    static $base = null;
+    if ($base === null) {
+        $base = rtrim((string) ((require __DIR__ . '/../config/app.php')['base_url'] ?? ''), '/');
+    }
+    $path = str_replace('\\', '/', $path);
+    if ($path !== '' && (str_starts_with($path, 'http://') || str_starts_with($path, 'https://'))) {
+        return $path;
+    }
+    $path = ltrim($path, '/');
+    if ($base !== '' && str_starts_with('/' . $path, $base . '/')) {
+        return '/' . $path;
+    }
+    if ($base !== '' && '/' . $path === $base) {
+        return $base;
+    }
+    if ($path === '') {
+        return $base !== '' ? $base . '/' : '/';
+    }
+    return ($base === '' ? '' : $base) . '/' . $path;
+}
+
 function redirect(string $path): void
 {
     if (!str_starts_with($path, 'http')) {
-        $base = rtrim((require __DIR__ . '/../config/app.php')['base_url'] ?? '', '/');
-        if (!str_starts_with($path, '/')) {
-            $path = $base . '/' . $path;
-        }
+        $path = url($path);
     }
     header('Location: ' . $path);
     exit;
@@ -117,7 +143,7 @@ function require_login(?array $roles = null): array
     $user = current_user();
     if (!$user) {
         flash('error', 'Please sign in first.');
-        redirect('/login.php');
+        redirect('login.php');
     }
     if ($roles !== null && !in_array($user['role'], $roles, true)) {
         flash('error', 'You do not have access to that page.');
@@ -129,11 +155,11 @@ function require_login(?array $roles = null): array
 function role_home(string $role): string
 {
     return match ($role) {
-        'teacher' => '/teacher/dashboard.php',
-        'branch_manager' => '/manager/dashboard.php',
-        'admin' => '/admin/dashboard.php',
-        'super_admin' => '/super/dashboard.php',
-        default => '/login.php',
+        'teacher' => url('teacher/dashboard.php'),
+        'branch_manager' => url('manager/dashboard.php'),
+        'admin' => url('admin/dashboard.php'),
+        'super_admin' => url('super/dashboard.php'),
+        default => url('login.php'),
     };
 }
 
@@ -410,7 +436,7 @@ function teacher_photo_src(?string $avatarPath): ?string
     if (!is_file($full)) {
         return null;
     }
-    return '/' . $rel;
+    return url($rel);
 }
 
 function save_teacher_avatar(array $file, int $teacherId): ?string
@@ -431,7 +457,7 @@ function save_teacher_avatar(array $file, int $teacherId): ?string
     if (($file['size'] ?? 0) > 3 * 1024 * 1024) {
         throw new RuntimeException('Photo max size 3MB.');
     }
-    $dir = __DIR__ . '/../storage/uploads/avatars';
+    $dir = __DIR__ . '/../teacher-traking/storage/uploads/avatars';
     if (!is_dir($dir)) {
         mkdir($dir, 0775, true);
     }
@@ -453,7 +479,7 @@ function store_review_evidence_photos(int $classId, array $filesField): array
         'image/png' => 'png',
         'image/webp' => 'webp',
     ];
-    $dir = __DIR__ . '/../storage/uploads/reviews';
+    $dir = __DIR__ . '/../teacher-traking/storage/uploads/reviews';
     if (!is_dir($dir)) {
         mkdir($dir, 0775, true);
     }
@@ -609,7 +635,7 @@ function ensure_teacher_flow_schema(): void
 /** Brand asset URLs (favicon_io package) */
 function brand_asset(string $file): string
 {
-    return '/favicon_io/' . ltrim($file, '/');
+    return url('favicon_io/' . ltrim($file, '/'));
 }
 
 function brand_favicon_tags(): string
@@ -628,17 +654,17 @@ HTML;
 
 function brand_logo_url(): string
 {
-    $jpg = __DIR__ . '/../favicon_io/logo-medico.jpg';
+    $jpg = __DIR__ . '/../teacher-traking/favicon_io/logo-medico.jpg';
     if (is_file($jpg)) {
         return brand_asset('logo-medico.jpg') . '?v=' . filemtime($jpg);
     }
-    $png = __DIR__ . '/../favicon_io/logo-medico.png';
+    $png = __DIR__ . '/../teacher-traking/favicon_io/logo-medico.png';
     if (is_file($png)) {
         return brand_asset('logo-medico.png') . '?v=' . filemtime($png);
     }
     return brand_asset('android-chrome-512x512.png');
 }
 
-require_once __DIR__ . '/notifications.php';
+require_once __DIR__ . '/teacher-traking/notifications.php';
 require_once __DIR__ . '/mail.php';
 require_once __DIR__ . '/pagination.php';

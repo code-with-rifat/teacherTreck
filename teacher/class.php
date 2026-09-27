@@ -14,7 +14,7 @@ $teacherStmt->execute([(int) $user['id']]);
 $teacher = $teacherStmt->fetch();
 if (!$teacher) {
     flash('error', 'Teacher profile missing.');
-    redirect('/logout.php');
+    redirect('/teacher-traking/logout.php');
 }
 $teacherId = (int) $teacher['id'];
 $teacherName = (string) $teacher['full_name'];
@@ -35,13 +35,13 @@ $classStmt->execute([$classId, $teacherId]);
 $class = $classStmt->fetch();
 if (!$class) {
     flash('error', 'Class not found.');
-    redirect('/teacher/dashboard.php');
+    redirect('/teacher-traking/teacher/dashboard.php');
 }
 
 $day = (string) $class['class_date'];
 $branchId = (int) $class['branch_id'];
-$dashUrl = '/teacher/dashboard.php?date=' . urlencode($day);
-$classUrl = '/teacher/class.php?id=' . $classId;
+$dashUrl = '/teacher-traking/teacher/dashboard.php?date=' . urlencode($day);
+$classUrl = '/teacher-traking/teacher/class.php?id=' . $classId;
 
 $visit = teacher_branch_day($pdo, $teacherId, $branchId, $day);
 $onSite = teacher_visit_on_site($visit);
@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'teach
     }
 
     flash('success', 'Class ended. Please submit the branch review for Admin.');
-    redirect('/teacher/review.php?class_id=' . $classId);
+    redirect('/teacher-traking/teacher/review.php?class_id=' . $classId);
 }
 
 $classStmt->execute([$classId, $teacherId]);
@@ -327,13 +327,13 @@ require __DIR__ . '/../includes/app_header.php';
                   <strong>Branch review submitted</strong>
                   <span>Admin details-এ দেখতে পারবে · <?= h(date('j M · h:i A', strtotime((string) $branchReview['submitted_at']))) ?></span>
                 </div>
-                <a class="btn btn-secondary btn-sm" href="/teacher/review.php?class_id=<?= $classId ?>" style="width:auto">View review</a>
+                <a class="btn btn-secondary btn-sm" href="/teacher-traking/teacher/review.php?class_id=<?= $classId ?>" style="width:auto">View review</a>
               <?php else: ?>
                 <div>
                   <strong>Branch review pending</strong>
                   <span>Cleanliness / facilities / staff — Admin ei details dekhbe</span>
                 </div>
-                <a class="btn btn-primary btn-sm" href="/teacher/review.php?class_id=<?= $classId ?>" style="width:auto">Give branch review</a>
+                <a class="btn btn-primary btn-sm" href="/teacher-traking/teacher/review.php?class_id=<?= $classId ?>" style="width:auto">Give branch review</a>
               <?php endif; ?>
             </div>
 

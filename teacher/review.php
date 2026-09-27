@@ -14,7 +14,7 @@ $teacherStmt->execute([(int) $user['id']]);
 $teacher = $teacherStmt->fetch();
 if (!$teacher) {
     flash('error', 'Teacher profile missing.');
-    redirect('/logout.php');
+    redirect('/teacher-traking/logout.php');
 }
 $teacherId = (int) $teacher['id'];
 $teacherName = (string) $teacher['full_name'];
@@ -33,12 +33,12 @@ $classStmt->execute([$classId, $teacherId]);
 $class = $classStmt->fetch();
 if (!$class) {
     flash('error', 'Class not found.');
-    redirect('/teacher/dashboard.php');
+    redirect('/teacher-traking/teacher/dashboard.php');
 }
 
-$classUrl = '/teacher/class.php?id=' . $classId;
-$dashUrl = '/teacher/dashboard.php?date=' . urlencode((string) $class['class_date']);
-$reviewUrl = '/teacher/review.php?class_id=' . $classId;
+$classUrl = '/teacher-traking/teacher/class.php?id=' . $classId;
+$dashUrl = '/teacher-traking/teacher/dashboard.php?date=' . urlencode((string) $class['class_date']);
+$reviewUrl = '/teacher-traking/teacher/review.php?class_id=' . $classId;
 $editUrl = $reviewUrl . '&edit=1';
 
 $existing = $pdo->prepare('SELECT * FROM class_reviews WHERE class_id = ? LIMIT 1');

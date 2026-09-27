@@ -1,9 +1,8 @@
 ---
 deployment:
   tasks:
-    # cPanel user = medicoweb (from DB prefix)
-    - export DEPLOYPATH=/home/medicoweb/public_html/
+    - export DEPLOYPATH=/home/medicoweb/public_html/teacher-traking/
     - /bin/mkdir -p $DEPLOYPATH
     - /bin/mkdir -p $DEPLOYPATH/storage/uploads
     - /bin/mkdir -p $DEPLOYPATH/storage/logs
-    - /usr/bin/rsync -av --exclude=".git" --exclude=".cpanel.yml" --exclude=".gitignore" --exclude=".env" --exclude="storage/uploads/" --exclude="storage/logs/" --exclude="*.log" ./ $DEPLOYPATH
+    - /usr/bin/rsync -av --exclude=".git" --exclude=".cpanel.yml" --exclude=".gitignore" --exclude=".env" --exclude="storage/uploads/" --exclude="storage/logs/" --exclude="*.log" --exclude="deploy-cpanel.zip" ./ $DEPLOYPATH

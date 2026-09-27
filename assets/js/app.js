@@ -3,7 +3,7 @@
  */
 (function (global) {
   // Use index.php so it works even if Apache rewrite is off
-  const BASE = '/api/index.php';
+  const BASE = '/teacher-traking/api/index.php';
   const TOKEN_KEY = 'medico_token';
   const USER_KEY = 'medico_user';
   const PROFILE_KEY = 'medico_profile';
@@ -121,13 +121,13 @@
   function roleHome(role) {
     switch (role) {
       case 'teacher':
-        return '/teacher/index.html';
+        return '/teacher-traking/teacher/index.html';
       case 'branch_manager':
-        return '/manager/index.html';
+        return '/teacher-traking/manager/index.html';
       case 'admin':
-        return '/admin/index.html';
+        return '/teacher-traking/admin/index.html';
       case 'super_admin':
-        return '/super/index.html';
+        return '/teacher-traking/super/index.html';
       default:
         return '/login.html';
     }

@@ -8,11 +8,11 @@ declare(strict_types=1);
 return [
     'app_name'   => 'MEDICO',
     'app_tagline'=> 'Class & Teacher Management',
-    // Domain root (public_html). Local XAMPP folder → '/teacherTreck'
-    'base_url'   => '',
-    'api_prefix' => '/api',
+    // Live: public_html/teacher-traking  |  Local XAMPP: '/teacherTreck'
+    'base_url'   => '/teacher-traking',
+    'api_prefix' => '/teacher-traking/api',
     'timezone'   => 'Asia/Dhaka',
-    'debug'      => false,
+    'debug'      => true,
 
     'db' => [
         'host'    => 'localhost',
@@ -31,8 +31,8 @@ return [
     ],
 
     'upload' => [
-        'signature_sheets' => __DIR__ . '/../storage/uploads/signatures',
-        'avatars'          => __DIR__ . '/../storage/uploads/avatars',
+        'signature_sheets' => __DIR__ . '/../teacher-traking/storage/uploads/signatures',
+        'avatars'          => __DIR__ . '/../teacher-traking/storage/uploads/avatars',
         'max_bytes'        => 5 * 1024 * 1024,
         'allowed_mimes'    => ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'],
     ],

@@ -8,21 +8,21 @@ declare(strict_types=1);
 function admin_nav(string $active): array
 {
     $links = [
-        ['id' => 'overview', 'href' => '/admin/dashboard.php', 'icon' => '▣', 'label' => 'Dashboard'],
-        ['id' => 'classes', 'href' => '/admin/classes.php', 'icon' => '▦', 'label' => 'Classes'],
-        ['id' => 'teachers', 'href' => '/admin/teachers.php', 'icon' => '◎', 'label' => 'Teachers'],
-        ['id' => 'reviews', 'href' => '/admin/reviews.php', 'icon' => '◈', 'label' => 'Reviews'],
-        ['id' => 'branches', 'href' => '/admin/branches.php', 'icon' => '⌂', 'label' => 'Branches'],
-        ['id' => 'notifications', 'href' => '/notifications.php', 'icon' => '◔', 'label' => 'Activity'],
+        ['id' => 'overview', 'href' => '/teacher-traking/admin/dashboard.php', 'icon' => '▣', 'label' => 'Dashboard'],
+        ['id' => 'classes', 'href' => '/teacher-traking/admin/classes.php', 'icon' => '▦', 'label' => 'Classes'],
+        ['id' => 'teachers', 'href' => '/teacher-traking/admin/teachers.php', 'icon' => '◎', 'label' => 'Teachers'],
+        ['id' => 'reviews', 'href' => '/teacher-traking/admin/reviews.php', 'icon' => '◈', 'label' => 'Reviews'],
+        ['id' => 'branches', 'href' => '/teacher-traking/admin/branches.php', 'icon' => '⌂', 'label' => 'Branches'],
+        ['id' => 'notifications', 'href' => '/teacher-traking/notifications.php', 'icon' => '◔', 'label' => 'Activity'],
     ];
     return [
         'activeNav' => $active,
         'navRole' => 'Admin',
         'shellStyle' => 'designo',
-        'composeHref' => '/admin/branches.php',
+        'composeHref' => '/teacher-traking/admin/branches.php',
         'composeLabel' => 'Branches',
-        'profileHref' => '/admin/dashboard.php',
-        'settingsHref' => '/admin/dashboard.php',
+        'profileHref' => '/teacher-traking/admin/dashboard.php',
+        'settingsHref' => '/teacher-traking/admin/dashboard.php',
         'settingsLabel' => 'Account',
         'navLinks' => $links,
         /* Bottom bar: keep 5 clean tabs; Activity stays in bell + sidebar */
